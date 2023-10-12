@@ -64,6 +64,9 @@ public class LibrariansGUI extends Application{
         try {
             c = DB.getConnection();
             //SQL FOR SELECTING THE WHOLE TABLE FROM BOOKLIST
+            String useDatabaseSQL = "USE booklist";
+            c.createStatement().execute(useDatabaseSQL);
+
             String SQL = "SELECT * from booklist";
             //ResultSet
             ResultSet rs = c.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY).executeQuery(SQL);

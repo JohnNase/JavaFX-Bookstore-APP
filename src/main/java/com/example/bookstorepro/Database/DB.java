@@ -6,16 +6,21 @@ import java.sql.SQLException;
 
 public class DB {
 
-    public static Connection getConnection(){
+    public static Connection getConnection() {
         Connection con = null;
-        try{
+        try {
             String url = "jdbc:mysql://127.0.0.1:3306/booklist";
             String username = "root";
-            String password = "";
+            String password = "sarasara1";
+
+            // Register the MySQL JDBC driver (for MySQL 8.x)
             Class.forName("com.mysql.cj.jdbc.Driver");
+
             con = DriverManager.getConnection(url, username, password);
-        }catch(ClassNotFoundException | SQLException e){e.printStackTrace();}
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
         return con;
     }
-
 }
+
