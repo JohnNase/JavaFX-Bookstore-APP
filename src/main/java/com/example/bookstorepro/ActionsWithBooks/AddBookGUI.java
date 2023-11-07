@@ -146,7 +146,6 @@ public class AddBookGUI extends Application {
         }
 
     public static boolean addBook(String bookName, String author, String ISBN, String genre, int quantity, double buyPrice, double sellPrice, String supplier) {
-        int status;
         try (Connection con = DB.getConnection()) {
 
             LocalDate localDate = datePicker.getValue();
@@ -164,7 +163,6 @@ public class AddBookGUI extends Application {
             preparedStatement.setDouble(7, sellPrice);
             preparedStatement.setString(8, supplier);
             preparedStatement.setDate(9,  sqlDate);
-            status = preparedStatement.executeUpdate();
 
 
         } catch (Exception e) {
