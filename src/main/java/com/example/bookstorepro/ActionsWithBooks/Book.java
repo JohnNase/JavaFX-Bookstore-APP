@@ -147,11 +147,9 @@ public class Book {
     //by ISBN------function to delete a book
 
     public static void deleteBook(String ISBN) {
-        int status = 0;
         try (Connection connection = DB.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM booklist WHERE ISBN='" + ISBN + "';");
             preparedStatement.setInt(3, Integer.parseInt(ISBN));
-            status = preparedStatement.executeUpdate();
         } catch (Exception e) {
             System.out.println(e);
         }

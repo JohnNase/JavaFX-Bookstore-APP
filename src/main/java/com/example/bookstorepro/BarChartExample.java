@@ -73,9 +73,6 @@ public class BarChartExample extends Application {
 
                     series1.setName("Books Sold");
                     series2.setName("Income");
-                    int quantity, price;
-                    quantity = 0;
-                    price = 0;
 
                     while (resultSet.next()) {
                         String label = resultSet.getString("librarianName");
@@ -135,7 +132,7 @@ public class BarChartExample extends Application {
         Statement statement = connection.createStatement();
         String query = "SELECT Sum(quantity) FROM transactions WHERE librarianname='"+librarian+"' AND dateoftransaction between '"+startDatePicker.getValue()+"' and '"+endDatePicker.getValue()+"'";
         ResultSet resultSet = statement.executeQuery(query);
-        while(resultSet.next()){
+        if(resultSet.next()){
             return resultSet.getInt(1);
         }
         return 0; }
@@ -145,7 +142,7 @@ public class BarChartExample extends Application {
         Statement statement = connection.createStatement();
         String query = "SELECT Sum(price) FROM transactions WHERE librarianname='"+librarian+"' AND dateoftransaction between '"+startDatePicker.getValue()+"' and '"+endDatePicker.getValue()+"'";
         ResultSet resultSet = statement.executeQuery(query);
-        while(resultSet.next()){
+        if(resultSet.next()){
             return resultSet.getDouble(1);
         }
         return 0.0; }
@@ -154,10 +151,6 @@ public class BarChartExample extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         buildChart();
-        //primaryStage.setTitle("BookstorePro - Bar Chart Example");
-       // Scene scene = new Scene(buildChart(), 800, 600);
-       // primaryStage.setScene(scene);
-       // primaryStage.show();
 
     }
 }

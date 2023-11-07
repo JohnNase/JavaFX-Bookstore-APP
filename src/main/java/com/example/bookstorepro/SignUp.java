@@ -93,7 +93,7 @@ public class SignUp extends Application {
         primaryStage.show();
 
         //Sign Up button functionality
-        signUpButton.setOnAction(e -> { addUser();});
+        signUpButton.setOnAction(e -> addUser());
 
         //Exit menu element
         exitProgram.setOnAction(e -> primaryStage.close());
@@ -217,7 +217,6 @@ public class SignUp extends Application {
         try
         {
             File file = new File("History.dat");
-            file.createNewFile();
             ObjectInputStream input = new ObjectInputStream(new FileInputStream(file));
             newUserController.setUsers((ArrayList<User>)input.readObject() );
         }

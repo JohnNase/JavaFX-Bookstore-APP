@@ -308,7 +308,7 @@ public class PerformanceGUI extends Application {
             String SQL = "SELECT SUM(price) FROM transactions";
             ResultSet rs = c.createStatement().executeQuery(SQL);
 
-            while (rs.next()) {
+            if (rs.next()) {
                 double totalRevenue = rs.getDouble(1);
                 return "$" + totalRevenue;
             }

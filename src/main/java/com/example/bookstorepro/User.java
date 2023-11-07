@@ -2,6 +2,7 @@ package com.example.bookstorepro;
 
 import javafx.beans.property.SimpleStringProperty;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /* VERY IMPORTANT!!!!!!
@@ -22,6 +23,7 @@ Github: @sara-berberi @JohnNase
 ALL RIGHTS RESERVED ®
  */
 public class User implements Serializable {
+    @Serial
     private static final long serialVersionUID = -81230957409593984L;
     private transient SimpleStringProperty firstName, lastName, email, username, password, role;
     private String firstName1, lastName1, email1, username1, password1, role1;
