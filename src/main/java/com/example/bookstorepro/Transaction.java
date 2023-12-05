@@ -18,7 +18,7 @@ public class Transaction {
             }
             else throw new IllegalArgumentException();
         }
-            throw new NullPointerException();
+            else throw new NullPointerException();
     }
     public static double getPrice() {
         return price;
