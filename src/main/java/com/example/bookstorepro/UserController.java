@@ -5,23 +5,6 @@ import java.io.ObjectOutputStream;
 import java.io.Serial;
 import java.util.ArrayList;
 
-/* VERY IMPORTANT!!!!!!
-Copyright ©[2023] [John Nase, Sara Berberi]
-
-This program code is the intellectual property of John Nase and Sara Berberi,
-and is protected by copyright law. All rights reserved.
-
-This program code may not be reproduced, distributed, or transmitted in any form or by any means,
-including photocopying, recording, or other electronic or mechanical methods, without the prior
-written permission of us, except in the case of brief quotations embodied in critical reviews
-and certain other noncommercial uses permitted by copyright law. By using this program code,
-you agree to abide by the terms of this copyright disclaimer. For permission requests or further
-inquiries, please contact us.
-
-Github: @sara-berberi @JohnNase
-
-ALL RIGHTS RESERVED ®
- */
 public class UserController implements java.io.Serializable{
     @Serial
     private static final long serialVersionUID = -155396823076863L;
@@ -37,6 +20,8 @@ public class UserController implements java.io.Serializable{
         }
         return  false;
     }
+
+
     public void printUsers(){
         for(int i = 0; i < users.size(); i ++){
             System.out.println(users.get(i));
@@ -46,7 +31,7 @@ public class UserController implements java.io.Serializable{
         return users;
     }
     public void setUsers(ArrayList<User> user){
-        this.users = user;
+        users = user;
     }
     public void deleteUser(User user) {
         users.remove(user);

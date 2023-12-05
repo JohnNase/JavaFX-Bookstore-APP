@@ -1,7 +1,3 @@
 JohnNase,JohnNase,Librarian
 SaraBerberi,SaraBerberi,Librarian
-Administrator,Administrator,Administrator
-Manager,Manager,Manager
-sberberi,sarasara1,administrator
-sara,sara,Admin
-saramanager,sara,Manager
+test,test,admin

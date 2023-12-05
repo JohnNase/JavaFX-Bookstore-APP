@@ -5,23 +5,6 @@ import javafx.beans.property.SimpleStringProperty;
 import java.io.Serial;
 import java.io.Serializable;
 
-/* VERY IMPORTANT!!!!!!
-Copyright ©[2023] [John Nase, Sara Berberi]
-
-This program code is the intellectual property of John Nase and Sara Berberi,
-and is protected by copyright law. All rights reserved.
-
-This program code may not be reproduced, distributed, or transmitted in any form or by any means,
-including photocopying, recording, or other electronic or mechanical methods, without the prior
-written permission of us, except in the case of brief quotations embodied in critical reviews
-and certain other noncommercial uses permitted by copyright law. By using this program code,
-you agree to abide by the terms of this copyright disclaimer. For permission requests or further
-inquiries, please contact us.
-
-Github: @sara-berberi @JohnNase
-
-ALL RIGHTS RESERVED ®
- */
 public class User implements Serializable {
     @Serial
     private static final long serialVersionUID = -81230957409593984L;
@@ -74,49 +57,56 @@ public class User implements Serializable {
         if(password == null) setPassword(password1);
         return password.get();
     }
+    //UPDATE: added the firstName NULL check
 
     public void setFirstName(String firstName) {
+        if(firstName==null){
+            throw new NullPointerException("First name cannot be null");
+        }
         this.firstName = new SimpleStringProperty(firstName);
         this.password = new SimpleStringProperty(password1);
     }
+    //UPDATE: added the lastName NULL check
     public void setLastName(String lastName) {
+        if(lastName==null){
+            throw new NullPointerException("Last name cannot be null");
+        }
         this.lastName = new SimpleStringProperty(lastName);
     }
+    //UPDATE: added the email NULL check
     public void setEmail(String email) {
+        if(email==null){
+            throw new NullPointerException("Email cannot be null");
+        }
         this.email = new SimpleStringProperty(email);
     }
+    //UPDATE: added the username NULL check
     public void setUsername(String username){
+        if(username==null){
+            throw new NullPointerException("Username cannot be null");
+        }
         this.username = new SimpleStringProperty(username);
     }
+    //UPDATE: added the role NULL check
     public void setRole(String role){
+        if(role==null){
+            throw new NullPointerException("Role cannot be null");
+        }
         this.role = new SimpleStringProperty(role);
     }
+    //UPDATE: added the password NULL check
     public void setPassword(String password) {
+        if(password==null){
+            throw new NullPointerException("Password cannot be null");
+        }
         this.password = new SimpleStringProperty(password);
     }
 
+    //UPDATE: removed the password from the toString method
     @Override
     public String toString(){
-        return "Name: " + getFirstName() + " |Last Name: " + getLastName() + " | Email: " + getEmail()
-                + "| Username: " + getUsername() + "| Role: "+ getRole() + "| Password: " + getPassword();
+        return "Name: " + getFirstName() + " Last Name: " + getLastName() + " Email: " + getEmail()
+                + " Username: " + getUsername() + " Role: "+ getRole();
     }
 }
 
-
-/* VERY IMPORTANT!!!!!!
-Copyright ©[2023] [John Nase, Sara Berberi]
-
-This program code is the intellectual property of John Nase and Sara Berberi,
-and is protected by copyright law. All rights reserved.
-
-This program code may not be reproduced, distributed, or transmitted in any form or by any means,
-including photocopying, recording, or other electronic or mechanical methods, without the prior
-written permission of us, except in the case of brief quotations embodied in critical reviews
-and certain other noncommercial uses permitted by copyright law. By using this program code,
-you agree to abide by the terms of this copyright disclaimer. For permission requests or further
-inquiries, please contact us.
-
-Github: @sara-berberi @JohnNase
-
-ALL RIGHTS RESERVED ®
- */
