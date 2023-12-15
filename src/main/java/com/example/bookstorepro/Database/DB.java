@@ -11,7 +11,7 @@ public class DB {
         try {
             String url = "jdbc:mysql://127.0.0.1:3306/booklist";
             String username = "root";
-            String password = "sarasara1";
+            String password = "Johnnasse6";
 
             // Register the MySQL JDBC driver (for MySQL 8.x)
             Class.forName("com.mysql.cj.jdbc.Driver");
