@@ -1,8 +1,9 @@
 import com.example.bookstorepro.User;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.io.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UserTest {
 
@@ -16,6 +17,8 @@ public class UserTest {
         assertEquals("Librarian", user.getRole());
         assertEquals("password", user.getPassword());
     }
+
+
 
     @Test
     public void testUserConstructorWithNullFirstName() {
@@ -147,6 +150,51 @@ public class UserTest {
         User user = new User("Brad Pitt", "Pitt", "brad.pitt@example.com", "bradpitt", "Librarian", "password");
         String expected = "Name: Brad Pitt Last Name: Pitt Email: brad.pitt@example.com Username: bradpitt Role: Librarian";
         assertEquals(expected, user.toString());
+    }
+
+    @Test
+    public void testEqualsMethod() {
+        User user1 = new User("Brad", "Pitt", "brad.pitt@example.com", "bradpitt", "Librarian", "password");
+        User user2 = new User("Brad", "Pitt", "brad.pitt@example.com", "bradpitt", "Librarian", "password");
+        User user3 = new User("George", "Clooney", "george@example.com", "george", "Actor", "ocean");
+
+        // Test equality with same object
+        assertEquals(user1, user1);
+
+        // Test equality with equivalent object
+        assertEquals(user1, user2);
+
+        // Test inequality with different object
+        assertNotEquals(user1, user3);
+
+        // Test inequality with null
+        assertNotEquals(user1, null);
+    }
+
+    @Test
+    public void testSerializationDeserialization() {
+        User originalUser = new User("Brad", "Pitt", "brad.pitt@example.com", "bradpitt", "Librarian", "password");
+        User deserializedUser = null;
+
+        try {
+            // Serialize the object
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+            objectOutputStream.writeObject(originalUser);
+            objectOutputStream.close();
+
+            // Deserialize the object
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+            ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
+            deserializedUser = (User) objectInputStream.readObject();
+            objectInputStream.close();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        // Check if deserialized object equals the original object
+        assertNotNull(deserializedUser);
+        assertEquals(originalUser, deserializedUser);
     }
 
 

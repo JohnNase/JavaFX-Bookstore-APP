@@ -1,6 +1,3 @@
-JohnNase,JohnNase,Librarian
-SaraBerberi,SaraBerberi,Librarian
-test,test,admin
-test_admin,test_admin,administrator
-test_manager,test_manager,manager
-test_librarian,test_librarian,librarian
+null,null,null
+null,null,null
+sara,sara,administrator
