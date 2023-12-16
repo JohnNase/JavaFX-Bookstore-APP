@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleStringProperty;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 public class User implements Serializable {
     @Serial
@@ -104,9 +105,26 @@ public class User implements Serializable {
 
     //UPDATE: removed the password from the toString method
     @Override
-    public String toString(){
-        return "Name: " + getFirstName() + " Last Name: " + getLastName() + " Email: " + getEmail()
-                + " Username: " + getUsername() + " Role: "+ getRole();
+    public String toString() {
+        return "Name: " + getFirstName() + " Last Name: " + getLastName() + " Email: " + getEmail() + " Username: " + getUsername() + " Role: " + getRole();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        User other = (User) obj;
+        return Objects.equals(getFirstName(), other.getFirstName()) &&
+                Objects.equals(getLastName(), other.getLastName()) &&
+                Objects.equals(getEmail(), other.getEmail()) &&
+                Objects.equals(getUsername(), other.getUsername()) &&
+                Objects.equals(getRole(), other.getRole());
+    }
+
+
 }
 
