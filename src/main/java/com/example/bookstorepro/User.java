@@ -5,105 +5,90 @@ import javafx.beans.property.SimpleStringProperty;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.Objects;
 
 public class User implements Serializable {
     @Serial
     private static final long serialVersionUID = -81230957409593984L;
-    private transient SimpleStringProperty firstName, lastName, email, username, password, role;
-    private String firstName1, lastName1, email1, username1, password1, role1;
+    private String firstName, lastName, email, username, password, role;
 
-    public User(String firstName, String lastName, String email, String username, String role, String password){
-        this.firstName1 = firstName;
-        setFirstName(firstName1);
-        this.lastName1 = lastName;
+    public User(String firstName, String lastName, String email, String username, String role, String password) {
+        setFirstName(firstName);
         setLastName(lastName);
-        this.email1 = email;
         setEmail(email);
-        this.username1 = username;
         setUsername(username);
-        this.role1 = role;
         setRole(role);
-        this.password1 = password;
+        setPassword(password);
     }
 
     public String getFirstName() {
-        if(firstName == null){
-            setFirstName(firstName1);
-            setPassword(password1);
-        }
-        return firstName.get();
+        return firstName;
     }
 
     public String getLastName() {
-        if(lastName == null) setLastName(lastName1);
-        return lastName.get();
+        return lastName;
     }
 
     public String getEmail() {
-        if(email == null) setEmail(email1);
-        return email.get();
+        return email;
     }
 
-    public String getUsername(){
-        if(username == null) setUsername(username1);
-        return username.get();
+    public String getUsername() {
+        return username;
     }
 
-    public String getRole(){
-        if(role == null) setRole(role1);
-        return role.get();
+    public String getRole() {
+        return role;
     }
 
-    public String getPassword(){
-        if(password == null) setPassword(password1);
-        return password.get();
+    public String getPassword() {
+        return password;
     }
-    //UPDATE: added the firstName NULL check
 
     public void setFirstName(String firstName) {
-        if(firstName==null){
+        if (firstName == null) {
             throw new NullPointerException("First name cannot be null");
         }
-        this.firstName = new SimpleStringProperty(firstName);
-        this.password = new SimpleStringProperty(password1);
-    }
-    //UPDATE: added the lastName NULL check
-    public void setLastName(String lastName) {
-        if(lastName==null){
-            throw new NullPointerException("Last name cannot be null");
-        }
-        this.lastName = new SimpleStringProperty(lastName);
-    }
-    //UPDATE: added the email NULL check
-    public void setEmail(String email) {
-        if(email==null){
-            throw new NullPointerException("Email cannot be null");
-        }
-        this.email = new SimpleStringProperty(email);
-    }
-    //UPDATE: added the username NULL check
-    public void setUsername(String username){
-        if(username==null){
-            throw new NullPointerException("Username cannot be null");
-        }
-        this.username = new SimpleStringProperty(username);
-    }
-    //UPDATE: added the role NULL check
-    public void setRole(String role){
-        if(role==null){
-            throw new NullPointerException("Role cannot be null");
-        }
-        this.role = new SimpleStringProperty(role);
-    }
-    //UPDATE: added the password NULL check
-    public void setPassword(String password) {
-        if(password==null){
-            throw new NullPointerException("Password cannot be null");
-        }
-        this.password = new SimpleStringProperty(password);
+        this.firstName = firstName;
     }
 
-    //UPDATE: removed the password from the toString method
+    public void setLastName(String lastName) {
+        if (lastName == null) {
+            throw new NullPointerException("Last name cannot be null");
+        }
+        this.lastName = lastName;
+    }
+
+    public void setEmail(String email) {
+        if (email == null) {
+            throw new NullPointerException("Email cannot be null");
+        }
+        this.email = email;
+    }
+
+    public void setUsername(String username) {
+        if (username == null) {
+            throw new NullPointerException("Username cannot be null");
+        }
+        this.username = username;
+    }
+
+    public void setRole(String role) {
+        if (role == null) {
+            throw new NullPointerException("Role cannot be null");
+        }
+        this.role = role;
+    }
+
+    public void setPassword(String password) {
+        if (password == null) {
+            throw new NullPointerException("Password cannot be null");
+        }
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "Name: " + getFirstName() + " Last Name: " + getLastName() + " Email: " + getEmail() + " Username: " + getUsername() + " Role: " + getRole();
@@ -124,7 +109,4 @@ public class User implements Serializable {
                 Objects.equals(getUsername(), other.getUsername()) &&
                 Objects.equals(getRole(), other.getRole());
     }
-
-
 }
-
