@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SignUpTest {
     private SignUp signUp;
-    private UserController newUserController;
     @AfterEach
     void cleanUp() {
         File file = new File("History.dat");
@@ -198,6 +197,44 @@ public class SignUpTest {
                 + System.lineSeparator();
 
         assertEquals(expectedOutput, outputStream.toString());
+    }
+
+    // Test for the maximum length of inputs
+    @Test
+    void testAddUser_MaxLength() {
+        // Max-length strings for each input field
+        boolean result = signUp.newUserController.signUp(
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ", // 52 characters
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ", // 52 characters
+                "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789@example.com", // 100 characters
+                "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz0123456789", // 50 characters
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ", // 52 characters
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ", // 52 characters
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ"  // 52 characters
+        );
+        assertFalse(result);
+    }
+
+
+    // Test invalid file format or corrupted file
+    @Test
+    void testInvalidFileFormat() {
+        // Prepare invalid serialized data by creating a byte array with arbitrary content
+        byte[] invalidSerializedData = "InvalidSerializedData".getBytes();
+
+        try {
+            // Use ByteArrayInputStream to simulate an input stream with invalid serialized data
+            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(invalidSerializedData);
+            signUp.input = new ObjectInputStream(byteArrayInputStream);
+
+            // The read operation should throw a ClassNotFoundException
+            assertThrows(ClassNotFoundException.class, () -> {
+                signUp.read();
+            });
+        } catch (IOException e) {
+            // Handle any IO exceptions during the setup
+            e.printStackTrace();
+        }
     }
 
 

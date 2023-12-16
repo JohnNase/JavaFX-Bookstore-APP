@@ -87,7 +87,7 @@ public class LogIn extends Application {
         }
     }
 
-    private boolean authenticate(String username, String password) {
+    public boolean authenticate(String username, String password) {
         try {
             ReadData.read();
         } catch (FileNotFoundException ex) {
@@ -102,7 +102,8 @@ public class LogIn extends Application {
         return false;
     }
 
-    private String determineUserRole(String username) {
+
+    public String determineUserRole(String username) {
         int index = ReadData.usernames.indexOf(username);
         return index != -1 ? ReadData.roles.get(index) : null;
     }
