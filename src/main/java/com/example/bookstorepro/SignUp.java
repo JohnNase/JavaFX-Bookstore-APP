@@ -35,6 +35,8 @@ Github: @sara-berberi @JohnNase
 ALL RIGHTS RESERVED ®
  */
 public class SignUp extends Application {
+    public ObjectOutputStream output;
+    public ObjectInputStream input;
     public SignUp(){
     }
     //Main pane
@@ -75,7 +77,7 @@ public class SignUp extends Application {
     TextField roleTF = new TextField();
     PasswordField verifyPasswordTF = new PasswordField();
 
-    UserController newUserController = new UserController();
+    public UserController newUserController = new UserController();
 
     public void start(Stage primaryStage) {
         read();
@@ -203,7 +205,7 @@ public class SignUp extends Application {
     public void write(){
         try
         {
-            ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream("History.dat"));
+            output = new ObjectOutputStream(new FileOutputStream("History.dat"));
             output.writeObject(newUserController.getUsers());
             output.close();
         }
@@ -217,7 +219,7 @@ public class SignUp extends Application {
         try
         {
             File file = new File("History.dat");
-            ObjectInputStream input = new ObjectInputStream(new FileInputStream(file));
+          input = new ObjectInputStream(new FileInputStream(file));
             newUserController.setUsers((ArrayList<User>)input.readObject() );
         }
         catch(IOException e)
