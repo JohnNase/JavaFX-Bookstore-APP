@@ -45,25 +45,25 @@ public class UserController implements java.io.Serializable{
     }
 
     // Helper methods
-    private boolean isNullOrEmpty(String str) {
+    public static boolean isNullOrEmpty(String str) {
         return str == null || str.isEmpty();
     }
 
-    private boolean isValidRole(String role) {
+    public static boolean isValidRole(String role) {
         String normalizedRole = role.toLowerCase(); // Convert role to lowercase
 
         return normalizedRole.equals("administrator") || normalizedRole.equals("manager") || normalizedRole.equals("librarian");  // Check if role is valid
     }
 
-    private boolean containsOnlySpaces(String str) {
+    public static boolean containsOnlySpaces(String str) {
         return str.trim().isEmpty();
     }
 
-    private boolean containsSymbol(String str) {
+    public static boolean containsSymbol(String str) {
         return !str.matches("[a-zA-Z0-9 ]+");
     }
 
-    private boolean isValidEmail(String email) {
+    public static boolean isValidEmail(String email) {
         // Regex pattern to validate email format
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
         return email.matches(emailRegex);
