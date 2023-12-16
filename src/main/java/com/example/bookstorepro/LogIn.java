@@ -17,12 +17,20 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+
 public class LogIn extends Application {
-    public static String username;
-    private String password;
+    private static String username;
+    public static void setUsername(String username) {
+        LogIn.username = username;
+    }
+    public static String getUsername() {
+        return username;
+    }
+
     public static void main(String[] args) throws FileNotFoundException {
         launch(args);
     }
+
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {
         GridPane grid = new GridPane();
@@ -32,7 +40,7 @@ public class LogIn extends Application {
         grid.setPadding(new Insets(25, 25, 25, 25));
 
         Text sceneTitle = new Text("Welcome!");
-        Font font = Font.loadFont(new FileInputStream("lib/Astrella.ttf"),23);
+        Font font = Font.loadFont(new FileInputStream("lib/Astrella.ttf"), 23);
         sceneTitle.setId("welcome-text");
         sceneTitle.setFont(font);
         grid.add(sceneTitle, 0, 0, 2, 1);
@@ -62,58 +70,70 @@ public class LogIn extends Application {
             }
         });
 
-        btn.setOnAction(e -> {
-             username = userTextField.getText();
-             password = pwBox.getText();
-
-            try {
-                ReadData.read();
-            } catch (FileNotFoundException ex) {
-                throw new RuntimeException(ex);
-            }
-            for(int i = 0; i < ReadData.users.size(); i++){
-                //test if username and password inputted match those of the existing users
-                if (username.equals(ReadData.usernames.get(i)) && password.equals(ReadData.passwords.get(i))) {
-                    actionTarget.setText("Sign in successful!");
-                    if(ReadData.roles.get(i).equals("Librarian")){ //if the role is librarian bring up the librarian GUI
-                        LibrariansGUI librarian = new LibrariansGUI();
-                        try {
-                            librarian.start(new Stage());
-                        } catch (Exception ex) {
-                            throw new RuntimeException(ex);
-                        }
-                        break;
-                    }
-                    else if(ReadData.roles.get(i).equals("Manager")){ //if the role is manager bring up the manager GUI
-                        ManagerGUI manager = new ManagerGUI();
-                        try {
-                            manager.start(new Stage());
-                        } catch (Exception ex) {
-                            throw new RuntimeException(ex);
-                        }
-                        break;
-                    }
-                    else{
-                        AdministratorGUI admin = new AdministratorGUI(); //the role is administrator, so we bring up the administrator GUI
-                        try {
-                            admin.start(new Stage());
-                        } catch (Exception ex) {
-                            throw new RuntimeException(ex);
-                        }
-                        break;
-                    }
-                }
-                else actionTarget.setText("Sign in failed!");
-            }
-        });
+        btn.setOnAction(e -> handleLogin(userTextField.getText(), pwBox.getText(), primaryStage, actionTarget));
 
         Scene scene = new Scene(grid, 300, 275);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
-    public static String getUsername() {
-        return username;
+    private void handleLogin(String username, String password, Stage primaryStage, Text actionTarget) {
+        boolean loginSuccessful = authenticate(username, password);
+        if (loginSuccessful) {
+            String role = determineUserRole(username);
+            launchAppropriateGUI(role, primaryStage);
+        } else {
+            actionTarget.setText("Sign in failed!");
+        }
     }
 
+    private boolean authenticate(String username, String password) {
+        try {
+            ReadData.read();
+        } catch (FileNotFoundException ex) {
+            throw new RuntimeException(ex);
+        }
+        for (int i = 0; i < ReadData.users.size(); i++) {
+            if (username.equals(ReadData.usernames.get(i)) && password.equals(ReadData.passwords.get(i))) {
+                setUsername(username);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String determineUserRole(String username) {
+        int index = ReadData.usernames.indexOf(username);
+        return index != -1 ? ReadData.roles.get(index) : null;
+    }
+
+    private void launchAppropriateGUI(String role, Stage primaryStage) {
+        if (role != null) {
+            switch (role) {
+                case "Librarian":
+                    LibrariansGUI librarian = new LibrariansGUI();
+                    launchGUI(librarian, primaryStage);
+                    break;
+                case "Manager":
+                    ManagerGUI manager = new ManagerGUI();
+                    launchGUI(manager, primaryStage);
+                    break;
+                case "Administrator":
+                    AdministratorGUI admin = new AdministratorGUI();
+                    launchGUI(admin, primaryStage);
+                    break;
+                default:
+                    throw new IllegalArgumentException("Invalid role");
+            }
+        }
+    }
+
+    private void launchGUI(Application application, Stage primaryStage) {
+        try {
+            application.start(new Stage());
+            primaryStage.close(); // Close the login window after successful login
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 }
