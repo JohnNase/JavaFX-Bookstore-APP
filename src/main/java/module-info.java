@@ -8,4 +8,5 @@ module com.example.bookstorepro {
     requires testfx.junit5;
     opens com.example.bookstorepro to javafx.fxml;
     exports com.example.bookstorepro;
+    exports com.example.bookstorepro.LibrarianFiles;
 }

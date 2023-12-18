@@ -3,6 +3,7 @@ import com.example.bookstorepro.Database.DB;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Objects;
 
 public class Librarian {
     private String username, password, role;
@@ -31,7 +32,6 @@ public class Librarian {
         return performance;
     }
 
-
     //setters
     public void setUsername(String username){
         this.username = username;
@@ -46,40 +46,24 @@ public class Librarian {
         this.performance = performance;
     }
 
-    public static boolean isAvailableISBN(String ISBN) {
-
-        try (Connection connection = DB.getConnection()) {
-            String queryString = "SELECT bookname, quantity,ISBN FROM booklist WHERE quantity=0 AND ISBN='" + ISBN + "'";
-
-            Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery(queryString);
-
-            return !resultSet.next();
-
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-        return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Librarian)) return false;
+        Librarian librarian = (Librarian) o;
+        return Objects.equals(username, librarian.username) &&
+                Objects.equals(password, librarian.password) &&
+                Objects.equals(role, librarian.role);
     }
 
-    public static boolean isAvailableBookTitle(String bookName) {
-        boolean availability = false;
-
-        try (Connection con = DB.getConnection()) {
-            String queryString = "SELECT bookname FROM booklist WHERE quantity=0 AND bookname='" + bookName + "'";
-            Statement st = con.createStatement();
-            ResultSet resultSet = st.executeQuery(queryString);
-            if(resultSet.next()) {
-                return false;
-            }
-        } catch (Exception e) {
-           e.printStackTrace();
-        }
-        return true;
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, password, role);
     }
 
 
-    }
+
+}
 
 
 
