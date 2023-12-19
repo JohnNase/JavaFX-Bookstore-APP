@@ -15,8 +15,8 @@ import static org.mockito.Mockito.*;
 public class AddBookTest {
 
     @Test
-    public void testAddBook() throws SQLException {
-        String bookName = "Test Book";
+    public void testAddBookValid() {
+        String bookName = "Book";
         String author = "Test Author";
         String ISBN = "1234567890";
         String genre = "Test Genre";
@@ -26,37 +26,30 @@ public class AddBookTest {
         String supplier = "Test Supplier";
         LocalDate localDate = LocalDate.now();
 
-        // Mock DataSource and Connection
-        DataSource mockDataSource = mock(DataSource.class);
-        Connection mockConnection = mock(Connection.class);
-        PreparedStatement mockStatement = mock(PreparedStatement.class);
-
-        when(mockDataSource.getConnection()).thenReturn(mockConnection);
-        when(mockConnection.prepareStatement(anyString())).thenReturn(mockStatement);
-        when(mockStatement.executeUpdate()).thenReturn(1);
-
-        boolean result = AddBookGUI.addBook(bookName, author, ISBN, genre, quantity, buyPrice, sellPrice, localDate, supplier, mockDataSource);
+        boolean result = AddBookGUI.addBook(bookName, author, ISBN, genre, quantity, buyPrice, sellPrice, localDate, supplier);
 
         assertTrue(result);
-        verify(mockStatement).setString(1, bookName);
-        verify(mockStatement).setString(2, author);
-        verify(mockStatement).setString(3, ISBN);
-        verify(mockStatement).setString(4, genre);
-        verify(mockStatement).setInt(5, quantity);
-        verify(mockStatement).setDouble(6, buyPrice);
-        verify(mockStatement).setDouble(7, sellPrice);
-        verify(mockStatement).setString(8, supplier);
-        verify(mockStatement).setDate(9, java.sql.Date.valueOf(localDate));
 
-
-        verify(mockStatement).executeUpdate();
+    }
+    @Test
+    public void testAddBook_EmptyBookName() {
+        String bookName = "";
+        String author = "Test Author";
+        String ISBN = "1234567890";
+        String genre = "Test Genre";
+        int quantity = 1;
+        double buyPrice = 10.0;
+        double sellPrice = 15.0;
+        String supplier = "Test Supplier";
+        LocalDate localDate = LocalDate.now();
+        boolean result = AddBookGUI.addBook(bookName, author, ISBN, genre, quantity, buyPrice, sellPrice, localDate, supplier);
+        assertFalse(result);
     }
 
     @Test
-    public void testAddBookThrowsException() throws Exception {
-
+    public void testAddBook_EmptyAuthor() {
         String bookName = "Test Book";
-        String author = "Test Author";
+        String author = "";
         String ISBN = "1234567890";
         String genre = "Test Genre";
         int quantity = 1;
@@ -64,16 +57,251 @@ public class AddBookTest {
         double sellPrice = 15.0;
         String supplier = "Test Supplier";
         LocalDate localDate = LocalDate.now();
-
-        DataSource mockDataSource = mock(DataSource.class);
-        Connection mockConnection = mock(Connection.class);
-        PreparedStatement mockStatement = mock(PreparedStatement.class);
-        when(mockDataSource.getConnection()).thenReturn(mockConnection);
-        when(mockConnection.prepareStatement(anyString())).thenReturn(mockStatement);
-        when(mockStatement.executeUpdate()).thenThrow(SQLException.class);
-
-        boolean result = AddBookGUI.addBook(bookName, author, ISBN, genre, quantity, buyPrice, sellPrice, localDate, supplier, mockDataSource);
-
+        boolean result = AddBookGUI.addBook(bookName, author, ISBN, genre, quantity, buyPrice, sellPrice, localDate, supplier);
         assertFalse(result);
     }
+    @Test
+    public void testAddBook_EmptyGenre() {
+        String bookName = "Test Book";
+        String author = "Test Author";
+        String ISBN = "1234567890";
+        String genre = "";
+        int quantity = 1;
+        double buyPrice = 10.0;
+        double sellPrice = 15.0;
+        String supplier = "Test Supplier";
+        LocalDate localDate = LocalDate.now();
+        boolean result = AddBookGUI.addBook(bookName, author, ISBN, genre, quantity, buyPrice, sellPrice, localDate, supplier);
+        assertFalse(result);
+    }
+    @Test
+    public void testAddBook_LocalDateNull() {
+        String bookName = "Test Book";
+        String author = "Test Author";
+        String ISBN = "1234567890";
+        String genre = "Fantasy";
+        int quantity = 1;
+        double buyPrice = 10.0;
+        double sellPrice = 15.0;
+        String supplier = "Test Supplier";
+        LocalDate localDate = null;
+        boolean result = AddBookGUI.addBook(bookName, author, ISBN, genre, quantity, buyPrice, sellPrice, localDate, supplier);
+        assertTrue(result);
+    }
+
+    @Test
+    public void testAddBook_nameNumbers() {
+        String bookName = "123456";
+        String author = "Test Author";
+        String ISBN = "1234567890";
+        String genre = "Fantasy";
+        int quantity = 1;
+        double buyPrice = 10.0;
+        double sellPrice = 15.0;
+        String supplier = "Test Supplier";
+        LocalDate localDate = LocalDate.now();
+        boolean result = AddBookGUI.addBook(bookName, author, ISBN, genre, quantity, buyPrice, sellPrice, localDate, supplier);
+        assertFalse(result);
+    }
+
+    @Test
+    public void testAddBook_authorNumbers() {
+        String bookName = "Test Book";
+        String author = "12345678";
+        String ISBN = "1234567890";
+        String genre = "Fantasy";
+        int quantity = 1;
+        double buyPrice = 10.0;
+        double sellPrice = 15.0;
+        String supplier = "Test Supplier";
+        LocalDate localDate = LocalDate.now();
+        boolean result = AddBookGUI.addBook(bookName, author, ISBN, genre, quantity, buyPrice, sellPrice, localDate, supplier);
+        assertFalse(result);
+    }
+    @Test
+    public void testAddBook_genreNumbers() {
+        String bookName = "Test Book";
+        String author = "Test Author";
+        String ISBN = "1234567890";
+        String genre = "";
+        int quantity = 1;
+        double buyPrice = 10.0;
+        double sellPrice = 15.0;
+        String supplier = "Test Supplier";
+        LocalDate localDate = LocalDate.now();
+        boolean result = AddBookGUI.addBook(bookName, author, ISBN, genre, quantity, buyPrice, sellPrice, localDate, supplier);
+        assertFalse(result);
+    }
+
+    @Test
+    public void testAddBook_SupplierNumbers() {
+        String bookName = "Test Book";
+        String author = "Test Author";
+        String ISBN = "1234567890";
+        String genre = "Fantasy";
+        int quantity = 1;
+        double buyPrice = 10.0;
+        double sellPrice = 15.0;
+        String supplier = "987654321";
+        LocalDate localDate = LocalDate.now();
+        boolean result = AddBookGUI.addBook(bookName, author, ISBN, genre, quantity, buyPrice, sellPrice, localDate, supplier);
+        assertFalse(result);
+    }
+
+    @Test
+    public void testAddBook_VeryLongBook() {
+        String bookName = "Aequeosalinocalcalinoceraceoaluminosocupreovitriolic";
+        String author = "Test Author";
+        String ISBN = "1234567890";
+        String genre = "Fantasy";
+        int quantity = 1;
+        double buyPrice = 10.0;
+        double sellPrice = 15.0;
+        String supplier = "Adrion";
+        LocalDate localDate = LocalDate.now();
+        boolean result = AddBookGUI.addBook(bookName, author, ISBN, genre, quantity, buyPrice, sellPrice, localDate, supplier);
+        assertFalse(result);
+    }
+
+    @Test
+    public void testAddBook_VeryLongAuthor() {
+        String bookName = "Test Book";
+        String author = "Aequeosalinocalcalinoceraceoaluminosocupreovitriolic";
+        String ISBN = "1234567890";
+        String genre = "Fantasy";
+        int quantity = 1;
+        double buyPrice = 10.0;
+        double sellPrice = 15.0;
+        String supplier = "Adrion";
+        LocalDate localDate = LocalDate.now();
+        boolean result = AddBookGUI.addBook(bookName, author, ISBN, genre, quantity, buyPrice, sellPrice, localDate, supplier);
+        assertFalse(result);
+    }
+
+    @Test
+    public void testAddBook_VeryLongSupplier() {
+        String bookName = "Test Book";
+        String author = "Test Author";
+        String ISBN = "1234567890";
+        String genre = "Fantasy";
+        int quantity = 1;
+        double buyPrice = 10.0;
+        double sellPrice = 15.0;
+        String supplier = "Aequeosalinocalcalinoceraceoaluminosocupreovitriolic";
+        LocalDate localDate = LocalDate.now();
+        boolean result = AddBookGUI.addBook(bookName, author, ISBN, genre, quantity, buyPrice, sellPrice, localDate, supplier);
+        assertFalse(result);
+    }
+
+    @Test
+    public void testAddBook_VeryLongGenre() {
+        String bookName = "Test Book";
+        String author = "Test Author";
+        String ISBN = "1234567890";
+        String genre = "Aequeosalinocalcalinoceraceoaluminosocupreovitriolic";
+        int quantity = 1;
+        double buyPrice = 10.0;
+        double sellPrice = 15.0;
+        String supplier = "Adrion";
+        LocalDate localDate = LocalDate.now();
+        boolean result = AddBookGUI.addBook(bookName, author, ISBN, genre, quantity, buyPrice, sellPrice, localDate, supplier);
+        assertFalse(result);
+    }
+
+    @Test
+    public void testAddBook_InvalidPrice() {
+        String bookName = "Test Book";
+        String author = "Test Author";
+        String ISBN = "1234567890";
+        String genre = "Fantasy";
+        int quantity = 1;
+        double buyPrice = 100.0;
+        double sellPrice = 15.0;
+        String supplier = "Adrion";
+        LocalDate localDate = LocalDate.now();
+        boolean result = AddBookGUI.addBook(bookName, author, ISBN, genre, quantity, buyPrice, sellPrice, localDate, supplier);
+        assertFalse(result);
+    }
+
+    @Test
+    public void testAddBook_NegativeBuyPrice() {
+        String bookName = "Test Book";
+        String author = "Test Author";
+        String ISBN = "1234567890";
+        String genre = "Fantasy";
+        int quantity = 1;
+        double buyPrice = -10.0;
+        double sellPrice = 15.0;
+        String supplier = "Adrion";
+        LocalDate localDate = LocalDate.now();
+        boolean result = AddBookGUI.addBook(bookName, author, ISBN, genre, quantity, buyPrice, sellPrice, localDate, supplier);
+        assertFalse(result);
+    }
+
+    @Test
+    public void testAddBook_NegativeSellPrice() {
+        String bookName = "Test Book";
+        String author = "Test Author";
+        String ISBN = "1234567890";
+        String genre = "Fantasy";
+        int quantity = 1;
+        double buyPrice = 10.0;
+        double sellPrice = -15.0;
+        String supplier = "Adrion";
+        LocalDate localDate = LocalDate.now();
+        boolean result = AddBookGUI.addBook(bookName, author, ISBN, genre, quantity, buyPrice, sellPrice, localDate, supplier);
+        assertFalse(result);
+    }
+
+    @Test
+    public void testAddBook_NegativeQuantity() {
+        String bookName = "Test Book";
+        String author = "Test Author";
+        String ISBN = "1234567890";
+        String genre = "Fantasy";
+        int quantity = -5;
+        double buyPrice = 10.0;
+        double sellPrice = 15.0;
+        String supplier = "Adrion";
+        LocalDate localDate = LocalDate.now();
+        boolean result = AddBookGUI.addBook(bookName, author, ISBN, genre, quantity, buyPrice, sellPrice, localDate, supplier);
+        assertFalse(result);
+    }
+    @Test
+    public void testAddBook_ISBNLengthNot13or10() {
+        String bookName = "Test Book";
+        String author = "Test Author";
+        String ISBN = "12345678901";
+        String genre = "Fantasy";
+        int quantity = 1;
+        double buyPrice = 10.0;
+        double sellPrice = 15.0;
+        String supplier = "Adrion";
+        LocalDate localDate = LocalDate.now();
+        boolean result = AddBookGUI.addBook(bookName, author, ISBN, genre, quantity, buyPrice, sellPrice, localDate, supplier);
+        assertFalse(result);
+    }
+    @Test
+    public void testAddBook_ISBNLetters() {
+        String bookName = "Test Book";
+        String author = "Test Author";
+        String ISBN = "invalidddd";
+        String genre = "Fantasy";
+        int quantity = 1;
+        double buyPrice = 3.0;
+        double sellPrice = 15.0;
+        String supplier = "Adrion";
+        LocalDate localDate = LocalDate.now();
+        boolean result = AddBookGUI.addBook(bookName, author, ISBN, genre, quantity, buyPrice, sellPrice, localDate, supplier);
+        assertFalse(result);
+    }
+
+
+
+
+
+
+
+
+
 }

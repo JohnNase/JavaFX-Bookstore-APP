@@ -14,7 +14,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-import javax.sql.DataSource;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
@@ -34,12 +33,9 @@ public class AddBookGUI extends Application {
     private static TextField supplierField;
     public static DatePicker datePicker;
     static GridPane grid = new GridPane();
-
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {
         System.out.println("AddBookGUI");
-
-
             Scene scene = new Scene(grid, 500, 500);
             primaryStage.setScene(scene);
             AddBookInterface(grid);
@@ -113,7 +109,6 @@ public class AddBookGUI extends Application {
 
             Button addButton = new Button("Add Book");
             addButton.setOnAction(e -> {
-
                 addBook(bookNameField.getText(),
                         authorField.getText(),
                         ISBNField.getText(),
@@ -122,7 +117,7 @@ public class AddBookGUI extends Application {
                         Double.parseDouble(buyPriceField.getText()),
                         Double.parseDouble(sellPriceField.getText()),
                         datePicker.getValue(),
-                        supplierField.getText(), (DataSource) DB.getConnection());
+                        supplierField.getText());
 
             });
 
@@ -130,9 +125,45 @@ public class AddBookGUI extends Application {
             addButton.setStyle("-fx-color: #C9ADA7");
         }
 
-    public static boolean addBook(String bookName, String author, String ISBN, String genre, int quantity, double buyPrice, double sellPrice, LocalDate localDate, String supplier, DataSource dataSource) {
-
-        try (Connection con = dataSource.getConnection()) {
+    public static boolean addBook(String bookName, String author, String ISBN, String genre, int quantity, double buyPrice, double sellPrice, LocalDate localDate, String supplier) {
+        if(bookName.isEmpty() || author.isEmpty() || ISBN.isEmpty() || genre.isEmpty() || quantity == 0 || buyPrice == 0 || sellPrice == 0 || supplier.isEmpty()
+        || bookName.isBlank()|| author.isBlank() || ISBN.isBlank() || genre.isBlank() || supplier.isBlank()){
+            System.out.println("Please fill all the fields");
+            return false;
+        }
+        if(localDate == null){
+            addBook(bookName, author, ISBN, genre, quantity, buyPrice, sellPrice, LocalDate.now(), supplier);
+            return true;
+        }
+        if(bookName.matches("[0-9]+") || author.matches("[0-9]+") || genre.matches("[0-9]+") || supplier.matches("[0-9]+")){
+            System.out.println("Field cannot contain only numbers");
+            return false;
+        }
+        if(bookName.length() > 50|| genre.length() > 50 || supplier.length() > 50 || author.length() > 50){
+            System.out.println("Field cannot be longer than 50 characters");
+            return false;
+        }
+        if(buyPrice > sellPrice){
+            System.out.println("Buy price cannot be greater than sell price");
+            return false;
+        }
+        if(quantity < 0){
+            System.out.println("Quantity cannot be negative");
+            return false;
+        }
+        if(buyPrice < 0 || sellPrice < 0){
+            System.out.println("Price cannot be negative");
+            return false;
+        }
+        if(ISBN.length() != 10 && ISBN.length() != 13){
+            System.out.println("ISBN must be 10 or 13 digits");
+            return false;
+        }
+        if(!ISBN.matches("[0-9]+")){
+            System.out.println("ISBN must contain only digits");
+            return false;
+        }
+        try (Connection con = DB.getConnection()) {
 
             Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
             java.util.Date date =  java.util.Date.from(instant);
@@ -148,8 +179,14 @@ public class AddBookGUI extends Application {
             preparedStatement.setDouble(7, sellPrice);
             preparedStatement.setString(8, supplier);
             preparedStatement.setDate(9,  sqlDate);
-
-            return preparedStatement.executeUpdate() > 0;
+            if(preparedStatement.executeUpdate() > 0){
+                System.out.println("Book added successfully");
+                return true;
+            }
+            else{
+                System.out.println("Book not added");
+                return false;
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
