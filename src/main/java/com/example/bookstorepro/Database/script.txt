@@ -1,0 +1,104 @@
+Create Table Booklist(
+  bookname char(100) NOT NULL,
+  author char(100) NOT NULL,
+  ISBN char(14) NOT NULL,
+  genre char(100) NOT NULL,
+  quantity Numeric NOT NULL,
+  buyPrice Numeric NOT NULL,
+  sellPrice Numeric NOT NULL,
+  supplier char(100) NOT NULL,
+  datePurchases date
+  );
+
+INSERT INTO Booklist
+VALUES ('The Dark Dragon', 'Cameron Woodard', '9781234567897', 'Fantasy', 0, 4, 22, 'Adrion Ltd', CURDATE());
+
+INSERT INTO Booklist
+VALUES ('Yes, Maybe, No', 'Mike Mann', '9783334572023', 'Fiction', 12, 5, 21, 'Bookland', CURDATE());
+
+INSERT INTO Booklist
+VALUES ('Together For A Day', 'Emely Cole', '9794316196809', 'Romance', 44, 6, 29, 'Adrion Ltd', CURDATE());
+
+INSERT INTO Booklist
+VALUES ('Burning Poem', 'Jasper Estes', '9783330198289', 'Poetry', 214, 3, 9, 'Bookland', CURDATE());
+
+INSERT INTO Booklist
+VALUES ('Dead Man’s Wish', 'Ansley Pierce', '9799204214740', 'Mystery', 234, 2, 4, 'Adrion Ltd', CURDATE());
+
+INSERT INTO Booklist
+VALUES ('A Party For Ghouls', 'Kianna Macias', '9785293915187', 'Horror', 124, 3, 9, 'Bookland', CURDATE());
+
+INSERT INTO Booklist
+VALUES ('Monster Strike', 'Rihanna Rocha', '9783122813413', 'Action', 33, 4, 8, 'Adrion Ltd', CURDATE());
+
+INSERT INTO Booklist
+VALUES ('Watch Out', 'Jewel Quinn, Paula Underwood', '9784164623411', 'Thriller', 123, 4, 6, 'Bookland', CURDATE());
+
+INSERT INTO Booklist
+VALUES ('Earth To Unknown', 'Bella Yu', '9794666026696', 'Science Fiction', 561, 7, 14, 'Adrion Ltd', CURDATE());
+
+INSERT INTO Booklist
+VALUES ('Imaginary Gravity', 'Anaya David', '9796895098888', 'Fantasy', 89, 2, 9, 'Bookland', CURDATE());
+
+INSERT INTO Booklist
+VALUES ('Stolen Love', 'Messiah Carey', '9785459233582', 'Romance', 56, 2, 6, 'Adrion Ltd', CURDATE());
+
+INSERT INTO Booklist
+VALUES ('Winter Fairy', 'Lexie Gibson', '9781454479604', 'Fantasy', 123, 3, 7, 'Bookland', CURDATE());
+
+INSERT INTO Booklist
+VALUES ('The Magic Tree', 'Warren Mcdonald', '9783475145551', 'Fiction', 98, 2, 12, 'Adrion Ltd', CURDATE());
+
+INSERT INTO Booklist
+VALUES ('Wizards of Ice', 'Jaylene Duarte', '9785480623352', 'Fantasy', 56, 6, 13, 'Bookland', CURDATE());
+
+INSERT INTO Booklist
+VALUES ('Call of the Forest', 'Lyric Whitehead', '9781218183136', 'Action', 89, 7, 13, 'Adrion Ltd', CURDATE());
+
+INSERT INTO Booklist
+VALUES ('The Enchanted Ones', 'Landyn Kelly', '9780298104574', 'Fantasy', 12, 3, 8, 'Bookland', CURDATE());
+
+INSERT INTO Booklist
+VALUES ('A Spell Too Far', 'Melany Galvan', '9787698599627', 'Fiction', 16, 2, 5, 'Adrion Ltd', CURDATE());
+
+INSERT INTO Booklist
+VALUES ('A Potion For The Wise', 'Dahlia Rasmussen, Ashtyn Ward', '9787778599627', 'Fantasy', 65, 7, 9, 'Bookland', CURDATE());
+
+INSERT INTO Booklist
+VALUES ('Tower To The Stars', 'Carla Hess', '9792971721336', 'Science Fiction', 90, 2, 6, 'Adrion Ltd', CURDATE());
+
+INSERT INTO Booklist
+VALUES ('Lost Warriors Of Elysium', 'Mercedes Atkinson', '9783393463645', 'Fantasy', 54, 12, 24, 'Bookland', CURDATE());
+
+INSERT INTO Booklist
+VALUES ('Eternal Soul', 'Amari Wall', '9788026445869', 'Mystery', 78, 3, 16, 'Adrion Ltd', CURDATE());
+
+INSERT INTO Booklist
+VALUES ('When Love Lasts', 'Nicolas Moon', '9791356880446', 'Romance', 0, 2, 9, 'Bookland', CURDATE());
+
+INSERT INTO Booklist
+VALUES ('The Crimes of Martin', 'Jimena Meyers', '9792145606889', 'Mystery', 34, 3, 20, 'Adrion Ltd', CURDATE());
+
+INSERT INTO Booklist
+VALUES ('The Secret Witness', 'Jax Bolton', '9787041154718', 'Thriller', 9, 4, 5, 'Bookland', CURDATE());
+
+
+Create Table Transactions(
+librarianName varchar(225),
+quantity int,
+price double,
+dateofTransaction date
+);
+
+INSERT INTO Transactions VALUES ('SaraBerberi', 2 , 12, '2023-02-09' );
+INSERT INTO Transactions VALUES ('JohnNase', 7 , 42, '2023-02-09' );
+INSERT INTO Transactions VALUES ('SaraBerberi', 4 ,26 , '2023-02-09' );
+INSERT INTO Transactions VALUES ('SaraBerberi', 7,49 , '2023-02-10' );
+INSERT INTO Transactions VALUES ('JohnNase', 13 ,117 , '2023-02-10' );
+
+
+ Create Table BillCounter(
+ cnt int
+ );
+
+ insert into BillCounter value(1)

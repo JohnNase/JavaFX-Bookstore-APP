@@ -5,22 +5,37 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DB {
+    private static Connection mockConnection = null;
+
 
     public static Connection getConnection() {
-        Connection con = null;
-        try {
-            String url = "jdbc:mysql://127.0.0.1:3306/booklist";
-            String username = "root";
-            String password = "sarasara1";
-
-            // Register the MySQL JDBC driver (for MySQL 8.x)
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            con = DriverManager.getConnection(url, username, password);
-        } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+        if(mockConnection != null) {
+            return mockConnection;
         }
-        return con;
+        else {
+            Connection con = null;
+            try {
+                String url = "jdbc:mysql://127.0.0.1:3306/booklist";
+                String username = "root";
+                String password = "sarasara1";
+
+                // Register the MySQL JDBC driver (for MySQL 8.x)
+                Class.forName("com.mysql.cj.jdbc.Driver");
+
+                con = DriverManager.getConnection(url, username, password);
+            } catch (ClassNotFoundException | SQLException e) {
+                e.printStackTrace();
+            }
+            return con;
+        }
     }
+
+    public static void setMockConnection(Connection mockConnection) {
+        DB.mockConnection = mockConnection;
+    }
+
+
+
+
 }
 
