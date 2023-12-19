@@ -1,22 +1,5 @@
 package com.example.bookstorepro.ActionsWithBooks;
 
-/* VERY IMPORTANT!!!!!!
-Copyright ©[2023] [John Nase, Sara Berberi]
-
-This program code is the intellectual property of John Nase and Sara Berberi,
-and is protected by copyright law. All rights reserved.
-
-This program code may not be reproduced, distributed, or transmitted in any form or by any means,
-including photocopying, recording, or other electronic or mechanical methods, without the prior
-written permission of us, except in the case of brief quotations embodied in critical reviews
-and certain other noncommercial uses permitted by copyright law. By using this program code,
-you agree to abide by the terms of this copyright disclaimer. For permission requests or further
-inquiries, please contact us.
-
-Github: @sara-berberi @JohnNase
-
-ALL RIGHTS RESERVED ®
- */
 import com.example.bookstorepro.Database.DB;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -31,6 +14,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+import javax.sql.DataSource;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
@@ -48,7 +32,7 @@ public class AddBookGUI extends Application {
     private static TextField buyPriceField;
     private static TextField sellPriceField;
     private static TextField supplierField;
-    private static DatePicker datePicker;
+    public static DatePicker datePicker;
     static GridPane grid = new GridPane();
 
     @Override
@@ -137,7 +121,8 @@ public class AddBookGUI extends Application {
                         Integer.parseInt(quantityField.getText()),
                         Double.parseDouble(buyPriceField.getText()),
                         Double.parseDouble(sellPriceField.getText()),
-                        supplierField.getText());
+                        datePicker.getValue(),
+                        supplierField.getText(), (DataSource) DB.getConnection());
 
             });
 
@@ -145,10 +130,10 @@ public class AddBookGUI extends Application {
             addButton.setStyle("-fx-color: #C9ADA7");
         }
 
-    public static boolean addBook(String bookName, String author, String ISBN, String genre, int quantity, double buyPrice, double sellPrice, String supplier) {
-        try (Connection con = DB.getConnection()) {
+    public static boolean addBook(String bookName, String author, String ISBN, String genre, int quantity, double buyPrice, double sellPrice, LocalDate localDate, String supplier, DataSource dataSource) {
 
-            LocalDate localDate = datePicker.getValue();
+        try (Connection con = dataSource.getConnection()) {
+
             Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
             java.util.Date date =  java.util.Date.from(instant);
             java.sql.Date sqlDate = new java.sql.Date(date.getTime());
@@ -164,31 +149,17 @@ public class AddBookGUI extends Application {
             preparedStatement.setString(8, supplier);
             preparedStatement.setDate(9,  sqlDate);
 
+            return preparedStatement.executeUpdate() > 0;
 
         } catch (Exception e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
-   return false; }
+        return false;
+    }
+
+
     public static void main(String[] args) {
         launch(args);
     }
 }
 
-
-/* VERY IMPORTANT!!!!!!
-Copyright ©[2023] [John Nase, Sara Berberi]
-
-This program code is the intellectual property of John Nase and Sara Berberi,
-and is protected by copyright law. All rights reserved.
-
-This program code may not be reproduced, distributed, or transmitted in any form or by any means,
-including photocopying, recording, or other electronic or mechanical methods, without the prior
-written permission of us, except in the case of brief quotations embodied in critical reviews
-and certain other noncommercial uses permitted by copyright law. By using this program code,
-you agree to abide by the terms of this copyright disclaimer. For permission requests or further
-inquiries, please contact us.
-
-Github: @sara-berberi @JohnNase
-
-ALL RIGHTS RESERVED ®
- */
