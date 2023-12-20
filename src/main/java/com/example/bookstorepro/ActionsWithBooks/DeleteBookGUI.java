@@ -1,5 +1,4 @@
 package com.example.bookstorepro.ActionsWithBooks;
-
 import com.example.bookstorepro.AdministratorFiles.AdministratorGUI;
 import com.example.bookstorepro.Database.DB;
 import javafx.application.Application;
@@ -16,13 +15,10 @@ import javafx.stage.Stage;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
-
 public class DeleteBookGUI extends Application {
     private static TextField bookNameField;
     private static TextField ISBNField;
     static GridPane grid = new GridPane();
-
-
 
     @Override
     public void start(Stage primaryStage) {
@@ -32,8 +28,6 @@ public class DeleteBookGUI extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
-
 
     public static void deleteBookInterface(GridPane grid){
         grid.setAlignment(Pos.CENTER);
@@ -46,7 +40,6 @@ public class DeleteBookGUI extends Application {
 
         bookNameField = new TextField();
         grid.add(bookNameField, 1, 0);
-
 
         Label ISBNLabel = new Label("ISBN:");
         grid.add(ISBNLabel, 0, 2);
@@ -67,30 +60,41 @@ public class DeleteBookGUI extends Application {
                 }
         );
         grid.add(addButton, 1, 9);
-
     }
 
     public static boolean deleteBook(String bookName, String ISBN) {
+        if(bookName.isEmpty() || ISBN.isEmpty()){
+            return false;
+        }
         int status;
+
         try (Connection con = DB.getConnection()) {
 
             PreparedStatement statement = con.prepareStatement( "DELETE FROM booklist WHERE bookname = '"+bookName+"' and ISBN='"+ISBN+"';");
-
+            System.out.println(statement);
             status = statement.executeUpdate();
+            System.out.println(status);
 
-            if(status == 1) {
+            if(status >0) {
                 System.out.println("Book deleted successfully.");
-                AdministratorGUI.tableview.refresh();
+                if(AdministratorGUI.tableview != null){
+                    AdministratorGUI.tableview.refresh();
+                    return true;
+                }
                 return true;
             }
-
+            else {
+                System.out.println("Failed to delete this book.");
+                return false;
+            }
         } catch (Exception e) {
            e.printStackTrace();
         }
         return false;
     }
 
-    public static void main(String[] args) {
+    public
+    static void main(String[] args) {
         launch(args);
     }
 }
