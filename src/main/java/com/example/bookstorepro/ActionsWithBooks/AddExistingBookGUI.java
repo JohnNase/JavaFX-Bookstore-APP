@@ -18,25 +18,13 @@ import javafx.stage.Stage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.*;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.function.Supplier;
 
-/* VERY IMPORTANT!!!!!!
-Copyright ©[2023] [John Nase, Sara Berberi]
 
-This program code is the intellectual property of John Nase and Sara Berberi,
-and is protected by copyright law. All rights reserved.
-
-This program code may not be reproduced, distributed, or transmitted in any form or by any means,
-including photocopying, recording, or other electronic or mechanical methods, without the prior
-written permission of us, except in the case of brief quotations embodied in critical reviews
-and certain other noncommercial uses permitted by copyright law. By using this program code,
-you agree to abide by the terms of this copyright disclaimer. For permission requests or further
-inquiries, please contact us.
-
-Github: @sara-berberi @JohnNase
-
-ALL RIGHTS RESERVED ®
- */
 public class AddExistingBookGUI extends Application {
 
     public static String  existingBookISBN;
@@ -51,8 +39,13 @@ public class AddExistingBookGUI extends Application {
     private static TextField genreField;
     private static TextField quantityField;
     private static TextField supplierField;
-    private static DatePicker datePicker;
+    public static DatePicker datePicker;
 
+    private static Supplier<Connection> connectionProvider;
+
+    public static void setConnectionProvider(Supplier<Connection> provider) {
+        connectionProvider = provider;
+    }
 
     public void start(Stage primaryStage) throws FileNotFoundException {
         System.out.println(getClass());
@@ -135,8 +128,12 @@ public class AddExistingBookGUI extends Application {
         supplierField = new TextField();
         grid.add(supplierField, 1, 7);
 
-        datePicker = new DatePicker();
+        datePicker = new DatePicker(LocalDate.now());
+
         grid.add(datePicker, 1, 8);
+        if(datePicker.getValue() == null) {
+            datePicker.setValue(LocalDate.now());
+        }
 
         buttonSubmitName.setOnAction(event -> {
             getContent(bookNameField.getText());
@@ -149,10 +146,7 @@ public class AddExistingBookGUI extends Application {
                 Double.parseDouble(sellPriceField.getText()),
                 Double.parseDouble(buyPriceField.getText()),
                 bookNameField.getText()
-
-
-                )
-        );
+        ));
         grid.add(addButton, 1, 9);
 
         borderPane.setBottom(grid);
@@ -171,74 +165,86 @@ public class AddExistingBookGUI extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    public static void getContent(String bookname) {
+    public static ArrayList<String> getContent(String bookname) {
+        ArrayList<String> content = new ArrayList<>();
 
-            try (Connection con = DB.getConnection()) {
+        try (Connection con = DB.getConnection()) {
 
-                String queryString = "SELECT * FROM booklist WHERE bookname='"+bookname+"'";
-                System.out.println(queryString);
-                Statement st = con.createStatement();
-                ResultSet resultSet = st.executeQuery(queryString);
+            String queryString = "SELECT * FROM booklist WHERE bookname='"+bookname+"'";
+            System.out.println(queryString);
+            Statement st = con.createStatement();
+            ResultSet resultSet = st.executeQuery(queryString);
 
-                while(resultSet.next()) {
-                    existingBookAuthor=(resultSet.getString(2));
-                    existingBookISBN=(resultSet.getString(3));
-                    existingBookGenre=(resultSet.getString(4));
-                   existingBookSupplier=(resultSet.getString(8));
-                    System.out.println("existing book author:"+existingBookAuthor);
-                    System.out.println("existing book ISBN:"+existingBookISBN);
-                    System.out.println("existing book Genre:"+existingBookGenre);
-                    System.out.println("existing book Supplier:"+existingBookSupplier);
-                }
-                resultSet.close();
-
-            } catch (Exception e) {
-                e.printStackTrace();
+            while(resultSet.next()) {
+                existingBookAuthor=(resultSet.getString(2));
+                existingBookISBN=(resultSet.getString(3));
+                existingBookGenre=(resultSet.getString(4));
+                existingBookSupplier=(resultSet.getString(8));
+                System.out.println("existing book author:"+existingBookAuthor);
+                System.out.println("existing book ISBN:"+existingBookISBN);
+                System.out.println("existing book Genre:"+existingBookGenre);
+                System.out.println("existing book Supplier:"+existingBookSupplier);
+                content.add(existingBookAuthor);
+                content.add(existingBookISBN);
+                content.add(existingBookGenre);
+                content.add(existingBookSupplier);
             }
-
+            resultSet.close();
+            return content;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return content;
     }
 
-    public static void UpdateBook( int quantity, double buyprice, double sellprice, String name) {
-        int status;
+    public static boolean UpdateBook(int quantity, double buyprice, double sellprice, String name) {
+        if(quantity == 0 || buyprice == 0 || sellprice == 0 || name.isEmpty() || name.isBlank() ) {
+            System.out.println("Please fill all the fields properly");
+            return false;
+        }
+        if(sellprice<buyprice){
+            System.out.println("Sell price cannot be less than buy price");
+            return false;
+        }
+        if(sellprice<0 || buyprice<0){
+            System.out.println("Price cannot be negative");
+            return false;
+        }
+        if(quantity<0){
+            System.out.println("Quantity cannot be negative");
+            return false;
+        }
         try (Connection con = DB.getConnection()) {
-            LocalDate localDate = datePicker.getValue();
-            String sql = "Update booklist  SET quantity=? , " +
-                    "  buyprice=? , sellprice=? ,  datepurchases=?" +
-                    "WHERE bookname='"+name+"'";
+            LocalDate localDate;
+            if(datePicker == null) {
+                localDate = LocalDate.now();
+            }
+            else {
+                localDate = datePicker.getValue();
+            }
+            Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
+            java.util.Date date =  java.util.Date.from(instant);
+            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+
+            String sql = "Update booklist  SET quantity=? , " + "  buyprice=? , sellprice=? ,  datepurchases=?" + "WHERE bookname='" + name + "'";
 
             PreparedStatement preparedStatement = con.prepareStatement(sql);
             preparedStatement.setInt(1, quantity);
-            preparedStatement.setDouble(2,buyprice);
-            preparedStatement.setDouble(3,sellprice);
-            preparedStatement.setDate(4, Date.valueOf(localDate));
+            preparedStatement.setDouble(2, buyprice);
+            preparedStatement.setDouble(3, sellprice);
+            preparedStatement.setDate(4, sqlDate);
 
-            status = preparedStatement.executeUpdate();
-
-            if(status == 1) {
+            if(preparedStatement.executeUpdate() == 1) {
                 System.out.println("Existing book added successfully.");
+                return true;
             }
-        } catch (Exception e) {
-           e.printStackTrace();
+            else {
+                System.out.println("Existing book not added.");
+                return false;
+            }
         }
-    }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+   return false; }
 }
-
-
-/* VERY IMPORTANT!!!!!!
-Copyright ©[2023] [John Nase, Sara Berberi]
-
-This program code is the intellectual property of John Nase and Sara Berberi,
-and is protected by copyright law. All rights reserved.
-
-This program code may not be reproduced, distributed, or transmitted in any form or by any means,
-including photocopying, recording, or other electronic or mechanical methods, without the prior
-written permission of us, except in the case of brief quotations embodied in critical reviews
-and certain other noncommercial uses permitted by copyright law. By using this program code,
-you agree to abide by the terms of this copyright disclaimer. For permission requests or further
-inquiries, please contact us.
-
-Github: @sara-berberi @JohnNase
-
-ALL RIGHTS RESERVED ®
- */
-

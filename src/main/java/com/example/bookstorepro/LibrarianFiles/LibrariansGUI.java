@@ -2,7 +2,6 @@ package com.example.bookstorepro.LibrarianFiles;
 
 import com.example.bookstorepro.Bill.BillGenerator;
 import com.example.bookstorepro.Database.DB;
-import com.example.bookstorepro.LogIn;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
@@ -13,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -23,40 +21,28 @@ import javafx.util.Callback;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
-import static javafx.geometry.Pos.BOTTOM_RIGHT;
 import static javafx.geometry.Pos.CENTER;
 
-public class LibrariansGUI extends Application{
-
-    //ALERT LAUNCHING VARIABLES
+public class LibrariansGUI extends Application {
 
     ArrayList<String> book = new ArrayList<>();
     public static int bookNo = 0;
     ArrayList<String> ISBN = new ArrayList<>();
-
-    //TABLE VIEW AND DATA
     public static ObservableList<ObservableList> data = FXCollections.observableArrayList();
     private static TableView tableview;
     BorderPane librariansPane = new BorderPane();
 
-
-    //MAIN EXECUTOR
     public static void main(String[] args) {
         launch(args);
     }
 
-    public LibrariansGUI(){
-        tableview=new TableView<>();
-
+    public LibrariansGUI() {
+        tableview = new TableView<>();
     }
 
-    //CONNECTION DATABASE
     public static TableView buildData() {
         Connection c = null;
         //TABLE VIEW AND DATA
@@ -109,71 +95,61 @@ public class LibrariansGUI extends Application{
         }
         return tableview;  }
 
-
-
     @Override
-    public void start(Stage stage) throws Exception {
-        //TableView
-        tableview = buildData();
+    public void start(Stage stage) {
+        try {
+            configureStage(stage);
+            createLayout(stage);
+            handleLowQuantityAlert();
+        } catch (Exception e) {
+            handleException(e);
+        }
+    }
+    private void configureStage(Stage stage) {
+        stage.setTitle("Librarian Dashboard");
+        stage.setResizable(false);
+    }
 
-        //CREATE BORDERPANE FOR LIBRARIAN SCREEN UI
-
+    private void createLayout(Stage stage) throws FileNotFoundException {
         librariansPane.setStyle("-fx-background-color: #FFFAE2; ");
 
-        //ON THE TOP OF THE BORDERPANE WILL BE PLACED A TEXT "HELLO LIBRARIAN" AND HIS/HER PROFILE PIC.
         Label hello = new Label("Hello Librarian!");
-
-        Label loggedInAs = new Label("Logged in as "+ LogIn.getUsername());
-        loggedInAs.setAlignment(BOTTOM_RIGHT);
-        loggedInAs.setTextAlignment(TextAlignment.RIGHT);
-        Font font1 = Font.loadFont(new FileInputStream("lib/Printer.ttf"), 13.5);
-        loggedInAs.setFont(font1);
-        librariansPane.setBottom(loggedInAs);
-
-        //IMPORT A CUSTOM FONT, TEXT COLOR, TEXT ALIGNMENT
-        Font font = Font.loadFont(new FileInputStream("lib/Astrella.ttf"), 40);
-        hello.setFont(font);
+        hello.setFont(Font.loadFont(new FileInputStream("lib/Astrella.ttf"), 40));
         hello.setTextFill(Color.WHITE);
         hello.setTextAlignment(TextAlignment.CENTER);
         hello.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0) ;");
 
-        //ADD AN HBOX THAT HOLDS "WELCOME" MESSAGE AND PROFILE PICTURE
         HBox HelloUser = new HBox();
         HelloUser.getChildren().add(hello);
-        HelloUser.setPadding(new Insets(20,20,20,20));
+        HelloUser.setPadding(new Insets(20, 20, 20, 20));
         hello.setAlignment(CENTER);
         HelloUser.setStyle("-fx-background-color: #92977E; ");
 
-        //ADD VBOX THAT HOLDS TWO BUTTONS
         VBox leftSide = new VBox(50);
-        leftSide.setPadding(new Insets(0,12,12,12));
+        leftSide.setPadding(new Insets(0, 12, 12, 12));
         leftSide.setStyle("-fx-background-color: #EADDA6; ");
 
-        //CREATE THE BUTTONS
         Button InventoryButton = new Button("Books Table");
         Button BillButton = new Button("Generate Bill");
 
-        //ADD BUTTONS TO VBOX, STYLE BUTTONS
         InventoryButton.setStyle("-fx-color: #FFFAE2; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0) ;");
         InventoryButton.setTranslateY(50);
         BillButton.setStyle("-fx-color: #FFFAE2;-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0) ; ");
         BillButton.setTranslateY(100);
-        leftSide.getChildren().addAll(InventoryButton,BillButton);
+        leftSide.getChildren().addAll(InventoryButton, BillButton);
 
-        //CREATE THE MENUBAR
-
-        //ADD THE HBOX TO THE BORDERPANE
         librariansPane.setTop(HelloUser);
         librariansPane.setLeft(leftSide);
 
-        //EVENT HANDLING THE BUTTONS
-        InventoryButton.setOnAction(e->{tableview.getColumns().clear();
-        data.clear();
-        tableview=buildData();
-        tableview.refresh();
-        librariansPane.setCenter(tableview);});
+        InventoryButton.setOnAction(e -> {
+            tableview.getColumns().clear();
+            data.clear();
+            tableview = buildData();
+            tableview.refresh();
+            librariansPane.setCenter(tableview);
+        });
 
-        BillButton.setOnAction(e-> {
+        BillButton.setOnAction(e -> {
             BillGenerator bill = new BillGenerator();
             Stage testStage = new Stage();
             try {
@@ -183,81 +159,86 @@ public class LibrariansGUI extends Application{
             }
         });
 
-       //CREATE THE ALERT
-        lowQuantity();
-        getContent();
-
-        StringBuilder contentToAlert = new StringBuilder(); //This StringBuilder will hold all the data for the missing book(s).
-        for(int i=0; i< book.size(); i++){
-            contentToAlert.append(book.get(i)).append("\n");
-        }
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("Out Of Stock");
-        if(bookNo==1){
-            alert.setHeaderText(bookNo+" book Out Of Stock!");
-        }
-        else if(bookNo>1){
-            alert.setHeaderText(bookNo+" books Out Of Stock!");
-        }
-
-        alert.setResizable(true);
-        alert.setContentText(String.valueOf(contentToAlert));
-        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-        alert.getDialogPane().setMinWidth(Region.USE_COMPUTED_SIZE);
-
-        //Main Scene
-        Scene scene = new Scene(librariansPane, 1000,600);
+        Scene scene = new Scene(librariansPane, 1000, 600);
         tableview.setEditable(true);
 
         stage.setScene(scene);
         stage.show();
+    }
 
-        //ALERT SHOULD POP UP WHEN ISBN ARRAYLIST ISN'T EMPTY, WHICH MEANS THERE ARE BOOKS THAT ARE SOLD OUT:
-        if(!ISBN.isEmpty()){
+
+    private void handleLowQuantityAlert() {
+        try {
+            fetchLowQuantityBooks();
+            createLowQuantityAlert();
+        } catch (Exception e) {
+            handleException(e);
+        }
+    }
+
+    private void fetchLowQuantityBooks() {
+        try (Connection con = DB.getConnection();
+             Statement st = con.createStatement();
+             ResultSet resultSet = st.executeQuery("SELECT * FROM booklist WHERE quantity=0")) {
+
+            while (resultSet.next()) {
+                ISBN.add(resultSet.getString(3));
+            }
+        } catch (Exception e) {
+            handleException(e);
+        }
+    }
+
+    private void createLowQuantityAlert() {
+        try {
+            getContent();
+            displayAlert();
+        } catch (Exception e) {
+            handleException(e);
+        }
+    }
+
+    private void getContent() {
+        try (Connection con = DB.getConnection()) {
+            for (String isbn : ISBN) {
+                fetchBookDetails(isbn, con);
+            }
+        } catch (Exception e) {
+            handleException(e);
+        }
+    }
+
+    private void fetchBookDetails(String isbn, Connection con) throws SQLException {
+        String queryString = "SELECT * FROM booklist WHERE ISBN=?";
+        try (PreparedStatement preparedStatement = con.prepareStatement(queryString)) {
+            preparedStatement.setString(1, isbn);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    book.add((bookNo + 1) + ".\t" + resultSet.getString(1) + "\t" + resultSet.getString(3) + "\t" + resultSet.getString(8));
+                    bookNo++;
+                }
+            }
+        }
+    }
+
+    private void displayAlert() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Low Quantity Alert");
+        alert.setHeaderText("The following books are out of stock:");
+        //show the book arraylist without the brackets and commas
+        alert.setContentText(book.toString().replace("[", "").replace("]", ""));
+        if (!ISBN.isEmpty()) {
             alert.showAndWait();
         }
     }
 
-
-    //ALERT FUNCTIONS
-    public void getContent() {
-
-        try (Connection con = DB.getConnection()) {
-            for(int i=0; i<ISBN.size();i++) {
-                String queryString = "SELECT * FROM booklist WHERE ISBN='" + ISBN.get(i) + "'";
-                Statement st = con.createStatement();
-                ResultSet resultSet = st.executeQuery(queryString);
-
-
-                while(resultSet.next()) {
-
-                    book.add((bookNo+1)+".\t" + resultSet.getString(1) +"\t" + resultSet.getString(3) + "\t" + resultSet.getString(8));
-                    bookNo++;
-                }
-                resultSet.close();
-            }
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
+    private void handleException(Exception e) {
+        e.printStackTrace();
+        //show the error in the window
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText("An error occurred");
+        alert.setContentText(e.getMessage());
+        alert.showAndWait();
     }
-
-    public void lowQuantity() {
-        try (Connection con = DB.getConnection()) {
-            String queryString = "SELECT * FROM booklist WHERE quantity=0";
-            Statement st = con.createStatement();
-            ResultSet resultSet = st.executeQuery(queryString);
-            ISBN = new ArrayList<>();
-            while(resultSet.next()) {
-                ISBN.add(resultSet.getString(3));
-            }
-            resultSet.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
-
 }
