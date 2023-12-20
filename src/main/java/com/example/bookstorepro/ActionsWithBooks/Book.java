@@ -1,5 +1,4 @@
 package com.example.bookstorepro.ActionsWithBooks;
-
 public class Book {
     private String bookName;
     private String ISBN;
@@ -7,9 +6,7 @@ public class Book {
     private String supplier;
     private int quantity = 0;
     private double sellPrice ;
-
     public Book(){
-
     }
 
     //getters
@@ -25,12 +22,10 @@ public class Book {
         return sellPrice;
     }
 
-
     //setters
     public void setName(String bookName) {
         this.bookName = bookName;
     }
-
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
@@ -39,16 +34,6 @@ public class Book {
     public void setSellPrice(double sellPrice) {
         this.sellPrice = sellPrice;
     }
-
-
-    //searching by book name------function to check if a book is available
-
-
-
-    //searching by ISBN------function to check if a book is available
-
-
-    //by ISBN------function to delete a book
 
 
 }
