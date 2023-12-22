@@ -1,3 +1,5 @@
+package IntegrationTests;
+
 import com.example.bookstorepro.ActionsWithBooks.AddExistingBookGUI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

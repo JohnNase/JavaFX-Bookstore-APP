@@ -1,3 +1,5 @@
+package IntegrationTests;
+
 import com.example.bookstorepro.ActionsWithBooks.AddBookGUI;
 import com.example.bookstorepro.Database.DB;
 import org.junit.jupiter.api.BeforeAll;

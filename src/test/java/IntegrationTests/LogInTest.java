@@ -1,3 +1,5 @@
+package IntegrationTests;
+
 import com.example.bookstorepro.LogIn;
 import com.example.bookstorepro.ReadData;
 import com.example.bookstorepro.SignUp;

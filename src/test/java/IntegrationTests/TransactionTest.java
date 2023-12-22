@@ -1,3 +1,5 @@
+package IntegrationTests;
+
 import com.example.bookstorepro.Transaction;
 import org.junit.jupiter.api.Test;
 import java.sql.Date;

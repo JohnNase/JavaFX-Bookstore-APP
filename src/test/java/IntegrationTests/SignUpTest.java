@@ -1,3 +1,5 @@
+package IntegrationTests;
+
 import com.example.bookstorepro.SignUp;
 import com.example.bookstorepro.User;
 import com.example.bookstorepro.UserController;

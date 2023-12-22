@@ -11,7 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class SoldOutAlertManager extends Application {
-    ArrayList<String> book = new ArrayList<>();
+    public ArrayList<String> book = new ArrayList<>();
     public static int bookNo = 0;
     ArrayList<String> ISBN = new ArrayList<>();
     @Override

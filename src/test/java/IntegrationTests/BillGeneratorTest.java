@@ -1,3 +1,5 @@
+package IntegrationTests;
+
 import com.example.bookstorepro.ActionsWithBooks.Book;
 import com.example.bookstorepro.Bill.BillGenerator;
 import com.example.bookstorepro.Database.DB;
