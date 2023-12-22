@@ -34,18 +34,6 @@ public class LogInTest {
         assertEquals("testUser", LogIn.getUsername());
     }
 
-//    @Test
-//    public void testAuthenticate() {
-//        String username = "emmaw";
-//        String password = "password";
-//          ReadData.usernames = new ArrayList<>(Arrays.asList(username));
-//        ReadData.passwords = new ArrayList<>(Arrays.asList(password));
-//
-//        LogIn login = new LogIn();
-//        boolean result = login.authenticate(username, password);
-//        assertTrue(result);  // Test when the user exists
-//    }
-
     @Test
     public void testNonExistentUserAuthenticate() {
         String username = "unknown";

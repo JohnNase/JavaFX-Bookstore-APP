@@ -3,10 +3,11 @@ module com.example.bookstorepro {
     requires javafx.fxml;
     requires java.sql;
     requires java.desktop;
-    requires mysql.connector.j;
     requires testfx.core;
     requires testfx.junit5;
+    requires javafx.graphics;
     opens com.example.bookstorepro to javafx.fxml,testfx.core;
+
     exports com.example.bookstorepro;
     exports com.example.bookstorepro.LibrarianFiles;
     exports com.example.bookstorepro.ManagerFiles;
@@ -15,3 +16,5 @@ module com.example.bookstorepro {
     exports com.example.bookstorepro.ActionsWithBooks;
     exports com.example.bookstorepro.AdministratorFiles;
 }
+
+

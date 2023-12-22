@@ -28,7 +28,7 @@ import java.util.List;
 
 public class BillGenerator extends Application {
 
-    private static final List<Book> books = new ArrayList<>();
+    public static final List<Book> books = new ArrayList<>();
     public static final VBox vbox = new VBox();
     public static final VBox totalVbox = new VBox();
     private static final HBox hboxBook = new HBox();
@@ -36,13 +36,13 @@ public class BillGenerator extends Application {
     private static final HBox hboxTitle = new HBox();
     private static final Label lblBook = new Label("Book Name");
     private static final Label lblQuantity = new Label("Quantity");
-    private static final TextField tfBook = new TextField();
-    private static final TextField tfQuantity = new TextField();
-    private static final Button btnNewBook = new Button("New Book");
+    public static final TextField tfBook = new TextField();
+    public static final TextField tfQuantity = new TextField();
+    public static final Button btnNewBook = new Button("New Book");
     private static final Button btnGenerateBill = new Button("Submit Bill");
     private static final Button btnSaveBill = new Button("Save & Print");
     private static final Label lblTotal = new Label("Total:");
-    private static final Label lblTotalPrice = new Label();
+    public static final Label lblTotalPrice = new Label();
 
     private static int BillNumber;
 
@@ -54,7 +54,7 @@ public class BillGenerator extends Application {
         }
     }
 
-    boolean error = false;
+    public boolean error = false;
     boolean error2 = false;
 
     public static void main(String[] args) {
@@ -282,12 +282,17 @@ public class BillGenerator extends Application {
         return menuBar;
     }
 
-    private static void calculateTotal() {
+    public static double calculateTotal() {
         double total = 0;
         for(Book book : books) {
             total += book.getSellPrice() * book.getQuantity();
         }
-        lblTotalPrice.setText(String.valueOf(total));
+        setLabelText(lblTotalPrice, String.valueOf(total));
+        return total;
+    }
+
+    public static void setLabelText(Label label, String text) {
+        label.setText(text);
     }
 
     public static Double findSellPrice(String name) {
