@@ -6,6 +6,7 @@ module com.example.bookstorepro {
     requires testfx.core;
     requires testfx.junit5;
     requires javafx.graphics;
+    requires mysql.connector.j;
     opens com.example.bookstorepro to javafx.fxml,testfx.core;
 
     exports com.example.bookstorepro;

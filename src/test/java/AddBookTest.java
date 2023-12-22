@@ -1,4 +1,6 @@
 import com.example.bookstorepro.ActionsWithBooks.AddBookGUI;
+import com.example.bookstorepro.Database.DB;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
@@ -14,6 +16,10 @@ import static org.mockito.Mockito.*;
 
 public class AddBookTest {
 
+    @BeforeAll
+    public static void SetUpDatabase(){
+        DB.getConnection();
+    }
     @Test
     public void testAddBookValid() {
         String bookName = "Book";

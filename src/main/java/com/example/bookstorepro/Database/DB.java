@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 public class DB {
     private static Connection mockConnection = null;
+    public static Connection RealConnection = null;
 
 
     public static Connection getConnection() {
@@ -13,7 +14,6 @@ public class DB {
             return mockConnection;
         }
         else {
-            Connection con = null;
             try {
                 String url = "jdbc:mysql://127.0.0.1:3306/booklist";
                 String username = "root";
@@ -22,11 +22,11 @@ public class DB {
                 // Register the MySQL JDBC driver (for MySQL 8.x)
                 Class.forName("com.mysql.cj.jdbc.Driver");
 
-                con = DriverManager.getConnection(url, username, password);
+                RealConnection = DriverManager.getConnection(url, username, password);
             } catch (ClassNotFoundException | SQLException e) {
                 e.printStackTrace();
             }
-            return con;
+            return RealConnection;
         }
     }
 

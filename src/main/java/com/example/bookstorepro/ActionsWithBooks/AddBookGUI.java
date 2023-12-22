@@ -1,6 +1,5 @@
 package com.example.bookstorepro.ActionsWithBooks;
 
-import com.example.bookstorepro.Database.DB;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,12 +16,15 @@ import javafx.stage.Stage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
 public class AddBookGUI extends Application {
+    static Connection con;
     private static TextField bookNameField;
     private static TextField authorField;
     private static TextField ISBNField;
@@ -163,7 +165,7 @@ public class AddBookGUI extends Application {
             System.out.println("ISBN must contain only digits");
             return false;
         }
-        try (Connection con = DB.getConnection()) {
+        try (Connection con = getConnection()) {
 
             Instant instant = Instant.from(localDate.atStartOfDay(ZoneId.systemDefault()));
             java.util.Date date =  java.util.Date.from(instant);
@@ -193,6 +195,23 @@ public class AddBookGUI extends Application {
         }
         return false;
     }
+
+    public static Connection getConnection() {
+            try {
+                String url = "jdbc:mysql://127.0.0.1:3306/booklist";
+                String username = "root";
+                String password = "sarasara1";
+
+                // Register the MySQL JDBC driver (for MySQL 8.x)
+                Class.forName("com.mysql.cj.jdbc.Driver");
+
+                con = DriverManager.getConnection(url, username, password);
+            } catch (ClassNotFoundException | SQLException e) {
+                e.printStackTrace();
+            }
+            return con;
+        }
+
 
 
     public static void main(String[] args) {
