@@ -49,18 +49,22 @@ public class LogIn extends Application {
         grid.add(userName, 0, 1);
 
         TextField userTextField = new TextField();
+        userTextField.setId("usernameField");
         grid.add(userTextField, 1, 1);
 
         Label pw = new Label("Password:");
         grid.add(pw, 0, 2);
 
         PasswordField pwBox = new PasswordField();
+        pwBox.setId("passwordField");
         grid.add(pwBox, 1, 2);
 
         Button btn = new Button("Log in");
+        btn.setId("loginButton");
         grid.add(btn, 1, 4);
 
         final Text actionTarget = new Text();
+        actionTarget.setId("actionTarget");
         grid.add(actionTarget, 1, 6);
         grid.setStyle("-fx-background-color: #EAE1DF");
 
@@ -110,16 +114,17 @@ public class LogIn extends Application {
 
     private void launchAppropriateGUI(String role, Stage primaryStage) {
         if (role != null) {
-            switch (role) {
-                case "Librarian":
+            switch (role.toLowerCase()) {
+                case "librarian":
                     LibrariansGUI librarian = new LibrariansGUI();
+
                     launchGUI(librarian, primaryStage);
                     break;
-                case "Manager":
+                case "manager":
                     ManagerGUI manager = new ManagerGUI();
                     launchGUI(manager, primaryStage);
                     break;
-                case "Administrator":
+                case "administrator": case "admin":
                     AdministratorGUI admin = new AdministratorGUI();
                     launchGUI(admin, primaryStage);
                     break;
