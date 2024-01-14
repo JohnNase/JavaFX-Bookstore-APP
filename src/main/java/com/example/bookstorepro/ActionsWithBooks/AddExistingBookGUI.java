@@ -26,7 +26,6 @@ import java.util.function.Supplier;
 
 
 public class AddExistingBookGUI extends Application {
-    public static String label = "";
 
     public static String  existingBookISBN;
     public static String  existingBookAuthor;
@@ -78,13 +77,11 @@ public class AddExistingBookGUI extends Application {
         bookNamePane.setVgap(5);
         Label bookNameLabel = new Label("Book Name: ");
         bookNameField = new TextField();
-        bookNameField.setId("bookNameField");
         getContent(bookNameField.getText());
         bookNamePane.add(bookNameLabel, 0, 0);
         bookNamePane.add(bookNameField, 1, 0);
 
         Button buttonSubmitName = new Button("Submit");
-        buttonSubmitName.setId("buttonSubmitName");
         buttonSubmitName.setStyle("-fx-color: #C9ADA7;");
         bookNamePane.add(buttonSubmitName, 1, 2, 2, 1);
         borderPane.setCenter(bookNamePane);
@@ -93,54 +90,45 @@ public class AddExistingBookGUI extends Application {
         grid.add(authorLabel, 0, 1);
 
         authorField = new TextField();
-        authorField.setId("authorField");
         grid.add(authorField, 1, 1);
 
         Label ISBNLabel = new Label("ISBN:");
-
         grid.add(ISBNLabel, 0, 2);
 
         ISBNField = new TextField();
-        ISBNField.setId("ISBNField");
         grid.add(ISBNField, 1, 2);
 
         Label genreLabel = new Label("Genre:");
         grid.add(genreLabel, 0, 3);
 
         genreField = new TextField();
-        genreField.setId("genreField");
         grid.add(genreField, 1, 3);
 
         Label quantityLabel = new Label("Quantity:");
         grid.add(quantityLabel, 0, 4);
 
         quantityField = new TextField();
-        quantityField.setId("quantityField");
         grid.add(quantityField, 1, 4);
 
         Label buyPriceLabel = new Label("Buy Price:");
         grid.add(buyPriceLabel, 0, 5);
 
         TextField buyPriceField = new TextField();
-        buyPriceField.setId("buyPriceField");
         grid.add(buyPriceField, 1, 5);
 
         Label sellPriceLabel = new Label("Sell Price:");
         grid.add(sellPriceLabel, 0, 6);
 
         TextField sellPriceField = new TextField();
-        sellPriceField.setId("sellPriceField");
         grid.add(sellPriceField, 1, 6);
 
         Label supplierLabel = new Label("Supplier:");
         grid.add(supplierLabel, 0, 7);
 
         supplierField = new TextField();
-        supplierField.setId("supplierField");
         grid.add(supplierField, 1, 7);
 
         datePicker = new DatePicker(LocalDate.now());
-        datePicker.setId("datePicker");
 
         grid.add(datePicker, 1, 8);
         if(datePicker.getValue() == null) {
@@ -151,14 +139,12 @@ public class AddExistingBookGUI extends Application {
             getContent(bookNameField.getText());
             fillTextFields();});
 
-
         Button addButton = new Button("Add Book");
-        addButton.setId("addButton");
         addButton.setStyle("-fx-color: #C9ADA7;");
         addButton.setOnAction(e -> UpdateBook(
                 Integer.parseInt(quantityField.getText()),
-                Double.parseDouble(buyPriceField.getText()),
                 Double.parseDouble(sellPriceField.getText()),
+                Double.parseDouble(buyPriceField.getText()),
                 bookNameField.getText()
         ));
         grid.add(addButton, 1, 9);
@@ -214,23 +200,18 @@ public class AddExistingBookGUI extends Application {
     public static boolean UpdateBook(int quantity, double buyprice, double sellprice, String name) {
         if(quantity == 0 || buyprice == 0 || sellprice == 0 || name.isEmpty() || name.isBlank() ) {
             System.out.println("Please fill all the fields properly");
-            label = "Please fill all the fields properly";
             return false;
         }
         if(sellprice<buyprice){
-            System.out.println("Debug: Sell price: " + sellprice + ", Buy price: " + buyprice);
             System.out.println("Sell price cannot be less than buy price");
-            label = "Sell price cannot be less than buy price";
             return false;
         }
         if(sellprice<0 || buyprice<0){
             System.out.println("Price cannot be negative");
-            label = "Price cannot be negative";
             return false;
         }
         if(quantity<0){
             System.out.println("Quantity cannot be negative");
-            label = "Quantity cannot be negative";
             return false;
         }
         try (Connection con = DB.getConnection()) {
@@ -255,12 +236,10 @@ public class AddExistingBookGUI extends Application {
 
             if(preparedStatement.executeUpdate() == 1) {
                 System.out.println("Existing book added successfully.");
-                label = "Existing book added successfully.";
                 return true;
             }
             else {
                 System.out.println("Existing book not added.");
-               label =  "Existing book not added.";
                 return false;
             }
         }
