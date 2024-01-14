@@ -43,6 +43,7 @@ public class BillGenerator extends Application {
     private static final Button btnSaveBill = new Button("Save & Print");
     private static final Label lblTotal = new Label("Total:");
     public static final Label lblTotalPrice = new Label();
+    public static String total_amount = "";
 
     private static int BillNumber;
 
@@ -63,8 +64,7 @@ public class BillGenerator extends Application {
 
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException, SQLException {
-
-
+        tfBook.setId("tfBook");
         Label title = new Label("Bill Generator");
         Font font = Font.loadFont(new FileInputStream("lib/Astrella.ttf"), 25);
         title.setFont(font);
@@ -76,6 +76,7 @@ public class BillGenerator extends Application {
         hboxBook.getChildren().addAll(lblBook, tfBook);
         hboxBook.setAlignment(Pos.CENTER);
         hboxQuantity.getChildren().addAll(lblQuantity, tfQuantity);
+        tfQuantity.setId("tfQuantity");
         hboxQuantity.setAlignment(Pos.CENTER);
 
         hboxTitle.getChildren().add(title);
@@ -96,13 +97,16 @@ public class BillGenerator extends Application {
 
         HBox hboxSave = new HBox();
         hboxSave.getChildren().addAll(lblTotal, lblTotalPrice);
+        lblTotalPrice.setId("lblTotalPrice");
         hboxSave.setSpacing(10);
         hboxSave.setAlignment(Pos.CENTER);
 
         btnSaveBill.setAlignment(Pos.CENTER);
+        btnSaveBill.setId("saveButton"); // for testing purposes
 
         vbox.getChildren().addAll(hboxBtns, hboxSave, btnSaveBill);
-
+        tfBook.setId("tfBook");
+        btnNewBook.setId("btnNewBook");
         //IF 'NEW BOOK' IS CLICKED
         btnNewBook.setOnAction(event -> {
             //CASE 1: EMPTY TEXTFIELDS
@@ -141,13 +145,13 @@ public class BillGenerator extends Application {
                 tfQuantity.clear();
                 tfBook.setPromptText("");
                 tfQuantity.setPromptText("");
-            //    totalVbox.getChildren().addAll(MenuBar(), vbox);
+                //    totalVbox.getChildren().addAll(MenuBar(), vbox);
                 Scene scene = new Scene(totalVbox, 500, 500);
                 primaryStage.setScene(scene);
             }
         });
 
-
+        btnGenerateBill.setId("Submit");
         btnGenerateBill.setOnAction(event -> {
 
             if(tfBook.getText().isEmpty()) {
@@ -183,60 +187,64 @@ public class BillGenerator extends Application {
         });
 
         btnSaveBill.setOnAction(event -> {
+            if(LogIn.getUsername()!=null) {
 
-            if(tfBook.getText().isEmpty()) {
-                tfBook.setStyle("-fx-border-color: red;");
-                tfBook.setPromptText("Enter book name");
-                error2 = true;
-            }
-            if(!DoesBookExist(tfBook.getText())) {
-                tfBook.setStyle("-fx-border-color: red;");
-                final Text actionTarget = new Text();
-                actionTarget.setText("Book not found.");
-                vbox.getChildren().add(actionTarget);
-                error2 = true;
-            }
-            if(tfQuantity.getText().isEmpty()) {
-                tfQuantity.setStyle("-fx-border-color: red;");
-                tfQuantity.setPromptText("Enter quantity");
-                error2 = true;
-            }
-
-            else if(DoesBookExist(tfBook.getText())
-                    &&!tfQuantity.getText().isEmpty()
-                    &&!tfBook.getText().isEmpty()){
-                int totalQuantity = 0;
-
-                tfBook.setStyle("-fx-border-color: green;");
-                tfQuantity.setStyle("-fx-border-color: green;");
-                try {
-                    File file = new File("Bill" + BillNumber+".txt");
-                    PrintWriter writer = new PrintWriter(file);
-                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                    Date date = new Date();
-                    writer.write(formatter.format(date));
-                    writer.write("\nlibrarian:"+LogIn.getUsername());
-                    writer.write("\n----------------------------------------\n");
-                    for(Book book1 : books) {
-                        writer.println(book1.getName() + " " + book1.getQuantity() + " " + book1.getSellPrice());
-                        totalQuantity=totalQuantity+book1.getQuantity();
-                    }
-                    writer.println("Total: $" + lblTotalPrice.getText());
-                    writer.close();
-                   BillNumber++;
-                   writeCounterValue();
-                    Transaction transaction = new Transaction(LogIn.getUsername(),LocalDate.now(),totalQuantity,Double.parseDouble(lblTotalPrice.getText()));
-                    insertTransaction(transaction);
-                    final Text actionTarget = new Text();
-                    actionTarget.setText("Bill saved and printed successfully.");
-                    vbox.getChildren().add(actionTarget);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                if(tfBook.getText().isEmpty()) {
+                    tfBook.setStyle("-fx-border-color: red;");
+                    tfBook.setPromptText("Enter book name");
+                    error2 = true;
                 }
-                tfBook.clear();
-                tfQuantity.clear();
+                if(!DoesBookExist(tfBook.getText())) {
+                    tfBook.setStyle("-fx-border-color: red;");
+                    final Text actionTarget = new Text();
+                    actionTarget.setText("Book not found.");
+                    vbox.getChildren().add(actionTarget);
+                    error2 = true;
+                }
+                if(tfQuantity.getText().isEmpty()) {
+                    tfQuantity.setStyle("-fx-border-color: red;");
+                    tfQuantity.setPromptText("Enter quantity");
+                    error2 = true;
+                }
 
+                else if(DoesBookExist(tfBook.getText()) && !tfQuantity.getText().isEmpty() && !tfBook.getText().isEmpty()) {
+                    int totalQuantity = 0;
+                    try {
+                        File file = new File("Generated_Bills/Bill" + BillNumber+".txt");
+                        PrintWriter writer = new PrintWriter(file);
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                        Date date = new Date();
+                        writer.write(formatter.format(date));
+                        writer.write("\nlibrarian:"+LogIn.getUsername());
+                        writer.write("\n----------------------------------------\n");
+                        for(Book book1 : books) {
+                            writer.println(book1.getName() + " " + book1.getQuantity() + " " + book1.getSellPrice());
+                            totalQuantity=totalQuantity+book1.getQuantity();
+                        }
+                        writer.println("Total: $" + lblTotalPrice.getText());
+                        total_amount = "Total: $" + lblTotalPrice.getText() ;
 
+                        writer.close();
+                        BillNumber++;
+                        writeCounterValue();
+                        Transaction transaction = new Transaction(LogIn.getUsername(),LocalDate.now(),totalQuantity,Double.parseDouble(lblTotalPrice.getText()));
+                        insertTransaction(transaction);
+                        final Text actionTarget = new Text();
+                        actionTarget.setText("Bill saved and printed successfully.");
+                        vbox.getChildren().add(actionTarget);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    tfBook.setStyle("-fx-border-color: green;");
+                    tfQuantity.setStyle("-fx-border-color: green;");
+                    tfBook.clear();
+                    tfQuantity.clear();
+                }
+            }
+            else {
+                final Text actionTarget = new Text();
+                actionTarget.setText("You must be logged in to save a bill.");
+                vbox.getChildren().add(actionTarget);
             }
         });
 
@@ -331,14 +339,14 @@ public class BillGenerator extends Application {
             return resultSet.next();
 
         } catch (Exception e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
 
         return false;
     }
 
 
-    public void insertTransaction(Transaction transaction) {
+    public static void insertTransaction(Transaction transaction) {
         String sql = "INSERT INTO Transactions (librarianName,quantity,price,dateoftransaction) VALUES (?, ?, ?,?)";
 
         try (Connection conn = DB.getConnection();
@@ -375,24 +383,9 @@ public class BillGenerator extends Application {
         statement.execute(queryString);
     }
 
+    public static int getBillNumber() {
+        return BillNumber;
+    }
+
 
 }
-
-
-/* VERY IMPORTANT!!!!!!
-Copyright ©[2023] [John Nase, Sara Berberi]
-
-This program code is the intellectual property of John Nase and Sara Berberi,
-and is protected by copyright law. All rights reserved.
-
-This program code may not be reproduced, distributed, or transmitted in any form or by any means,
-including photocopying, recording, or other electronic or mechanical methods, without the prior
-written permission of us, except in the case of brief quotations embodied in critical reviews
-and certain other noncommercial uses permitted by copyright law. By using this program code,
-you agree to abide by the terms of this copyright disclaimer. For permission requests or further
-inquiries, please contact us.
-
-Github: @sara-berberi @JohnNase
-
-ALL RIGHTS RESERVED ®
- */
