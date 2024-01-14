@@ -36,11 +36,13 @@ import static javafx.geometry.Pos.CENTER;
 public class AdministratorGUI extends Application {
 
     //CREATE BORDERPANE FOR LIBRARIAN SCREEN UI
-    BorderPane administratorsPane = new BorderPane();
+    public static ChoiceDialog<String> dialog ; //Dialog box for changing the role of an existing user
+    public BorderPane administratorsPane = new BorderPane();
     //ALERT LAUNCHING VARIABLES
     ArrayList<String> book = new ArrayList<>();
     public static int bookNo = 0;
     ArrayList<String> ISBN = new ArrayList<>();
+    public static TableView<User> userTable = new TableView<>();
 
     public static TableView tableview;
     public static ObservableList<ObservableList> data = FXCollections.observableArrayList();
@@ -170,6 +172,7 @@ public class AdministratorGUI extends Application {
         CheckPerformanceButton.setTranslateY(4);
         ManageUsersButton.setStyle("-fx-color: #EDEBD7;-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
         ManageUsersButton.setTranslateY(5);
+        ManageUsersButton.setId("ManageUsersButton");
         AddUserButton.setStyle("-fx-color: #EDEBD7;-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
         AddUserButton.setTranslateY(6);
         DeleteBookButton.setStyle("-fx-color: #EDEBD7;-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
@@ -234,7 +237,8 @@ public class AdministratorGUI extends Application {
                 System.out.println("3. " +  e1);
             }
             //creating a copy of the showUsers table
-            TableView<User> userTable = new TableView<>();
+
+            userTable.setId("userTable");
             AtomicReference<ObservableList<User>> data = new AtomicReference<>(FXCollections.observableArrayList(newUserController.getUsers()));
             System.out.println("0000"+data);
             userTable.setItems(data.get());
@@ -256,6 +260,7 @@ public class AdministratorGUI extends Application {
             System.out.println("data before:"+data.get());
             //Button for deleting an existing user
             Button deleteUserButton = new Button("Delete User");
+            deleteUserButton.setId("deleteUserButton");
             deleteUserButton.setOnAction(ee -> {
                 User selectedUser = userTable.getSelectionModel().getSelectedItem();
                 if (selectedUser != null) {
@@ -275,12 +280,26 @@ public class AdministratorGUI extends Application {
             });
             //Button for changing the role of an existing user
             Button changeRoleButton = new Button("Change Role");
+            changeRoleButton.setId("changeRoleButton");
             System.out.println("data before changing role:"+data.get());
             changeRoleButton.setOnAction(ee -> {
                 User selectedUser = userTable.getSelectionModel().getSelectedItem();
                 if (selectedUser != null) {
                     // Dialog box to select the desired role
-                    ChoiceDialog<String> dialog = new ChoiceDialog<>("Librarian", "Librarian", "Manager", "Administrator");
+                    dialog = new ChoiceDialog<>( "Librarian", "Manager", "Administrator");
+
+                    //add ids for the choices
+                    dialog.getDialogPane().lookupButton(ButtonType.OK).setId("okButton");
+                    dialog.getDialogPane().lookupButton(ButtonType.CANCEL).setId("cancelButton");
+                    dialog.getDialogPane().lookupButton(ButtonType.OK).setStyle("-fx-color: #EDEBD7;");
+                    dialog.getDialogPane().lookupButton(ButtonType.CANCEL).setStyle("-fx-color: #EDEBD7;");
+                    dialog.getDialogPane().setId("dialog");
+
+                    //How to access the three alternatives to select
+
+
+
+
                     dialog.setTitle("Change Role");
                     dialog.setHeaderText("Select the desired role:");
                     dialog.setContentText("Role:");

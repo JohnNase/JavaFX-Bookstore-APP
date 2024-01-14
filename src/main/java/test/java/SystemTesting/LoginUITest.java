@@ -1,22 +1,31 @@
 package test.java.SystemTesting;
 
+import com.example.bookstorepro.AdministratorFiles.AdministratorGUI;
 import com.example.bookstorepro.LogIn;
+import com.example.bookstorepro.User;
 import com.example.bookstorepro.UserController;
+import javafx.scene.Scene;
+import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.testfx.api.FxRobot;
 import org.testfx.api.FxToolkit;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.base.NodeMatchers;
+import org.testfx.service.query.PointQuery;
+import org.testfx.util.WaitForAsyncUtils;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.testfx.api.FxAssert.verifyThat;
 
 
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class LoginUITest extends ApplicationTest {
+    FxRobot robot = new FxRobot();
 
     @BeforeEach
     public void setup() throws Exception {
@@ -70,7 +79,9 @@ public class LoginUITest extends ApplicationTest {
         clickOn("#passwordField").write("password");
         clickOn("#loginButton");
         sleep(5000);
+
         verifyThat("#administratorsPane", NodeMatchers.isVisible());
     }
+    }
 
-}
+

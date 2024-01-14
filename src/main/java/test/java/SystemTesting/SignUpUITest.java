@@ -41,9 +41,13 @@ public class SignUpUITest extends ApplicationTest {
         assertEquals("User created!", SignUp.successString);
     }
 
+
+
     private void signUpTestUser() {
         UserController userController = new UserController();
         userController.signUp("Sierra", "Mendes", "smendes@example.com", "smendes", "librarian", "password", "password");
         userController.saveData();
     }
+
+
 }

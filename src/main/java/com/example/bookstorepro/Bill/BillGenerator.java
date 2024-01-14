@@ -67,6 +67,14 @@ public class BillGenerator extends Application {
 
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException, SQLException {
+        tfBook.setId("tfBook");
+        tfQuantity.setId("tfQuantity");
+        btnNewBook.setId("btnNewBook");
+
+        btnGenerateBill.setId("Submit");
+        btnSaveBill.setId("saveButton");
+        lblTotalPrice.setId("lblTotalPrice");
+
 
 
         Label title = new Label("Bill Generator");
@@ -214,7 +222,7 @@ public class BillGenerator extends Application {
                 tfBook.setStyle("-fx-border-color: green;");
                 tfQuantity.setStyle("-fx-border-color: green;");
                 try {
-                    File file = new File("Bill" + BillNumber+".txt");
+                    File file = new File("Generated_Bills/Bill" + BillNumber+".txt");
                     PrintWriter writer = new PrintWriter(file);
                     SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                     Date date = new Date();
@@ -261,7 +269,7 @@ public class BillGenerator extends Application {
             vbox.getChildren().remove(actionTarget);
             if(!(tfQuantity.getText().isEmpty()&&tfBook.getText().isEmpty())) {
                 try {
-                    File file = new File("Bill" + BillNumber + ".txt");
+                    File file = new File("Generated_Bills/Bill" + BillNumber + ".txt");
                     PrintWriter writer = new PrintWriter(file);
                     for(Book book : books) {
                         writer.println(book.getName() + " " + book.getQuantity() + "x " + "$" + book.getSellPrice());

@@ -190,6 +190,7 @@ public class SignUp extends Application {
         roleCol.setCellValueFactory(new PropertyValueFactory<User, String>("role"));
 
         userTable.getColumns().addAll(firstNameCol, lastNameCol, emailCol, usernameCol, roleCol);
+        userTable.setId("userTable");
 
         Pane pane = new Pane();
         pane.getChildren().add(userTable);
