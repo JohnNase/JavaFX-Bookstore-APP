@@ -37,7 +37,8 @@ public class AddBookGUI extends Application {
     static GridPane grid = new GridPane();
     @Override
     public void start(Stage primaryStage) throws FileNotFoundException {
-        System.out.println("AddBookGUI");
+            System.out.println("AddBookGUI");
+
             Scene scene = new Scene(grid, 500, 500);
             primaryStage.setScene(scene);
             AddBookInterface(grid);
@@ -45,6 +46,7 @@ public class AddBookGUI extends Application {
         }
 
         public static void AddBookInterface(GridPane grid) throws FileNotFoundException {
+
             Label title = new Label("Add new Book in Inventory");
             Font font = Font.loadFont(new FileInputStream("lib/Astrella.ttf"), 25);
             title.setFont(font);
@@ -62,54 +64,64 @@ public class AddBookGUI extends Application {
             grid.add(bookNameLabel, 0, 2);
 
             bookNameField = new TextField();
+            bookNameField.setId("bookNameField");
             grid.add(bookNameField, 1, 2);
 
             Label authorLabel = new Label("Author:");
             grid.add(authorLabel, 0, 3);
 
             authorField = new TextField();
+            authorField.setId("authorField");
             grid.add(authorField, 1, 3);
 
             Label ISBNLabel = new Label("ISBN:");
             grid.add(ISBNLabel, 0, 4);
 
             ISBNField = new TextField();
+            ISBNField.setId("ISBNField");
             grid.add(ISBNField, 1, 4);
 
             Label genreLabel = new Label("Genre:");
             grid.add(genreLabel, 0, 5);
 
             genreField = new TextField();
+            genreField.setId("genreField");
             grid.add(genreField, 1, 5);
 
             Label quantityLabel = new Label("Quantity:");
             grid.add(quantityLabel, 0, 6);
 
             quantityField = new TextField();
+            quantityField.setId("quantityField");
             grid.add(quantityField, 1, 6);
 
             Label buyPriceLabel = new Label("Buy Price:");
             grid.add(buyPriceLabel, 0, 7);
 
             buyPriceField = new TextField();
+            buyPriceField.setId("buyPriceField");
             grid.add(buyPriceField, 1, 7);
 
             Label sellPriceLabel = new Label("Sell Price:");
             grid.add(sellPriceLabel, 0, 8);
 
             sellPriceField = new TextField();
+            sellPriceField.setId("sellPriceField");
             grid.add(sellPriceField, 1, 8);
 
             Label supplierLabel = new Label("Supplier:");
             grid.add(supplierLabel, 0, 9);
 
             supplierField = new TextField();
+            supplierField.setId("supplierField");
             grid.add(supplierField, 1, 9);
 
             datePicker = new DatePicker();
+            datePicker.setId("datePicker");
             grid.add(datePicker, 1, 10);
 
             Button addButton = new Button("Add Book");
+            addButton.setId("addButton");
             addButton.setOnAction(e -> {
                 addBook(bookNameField.getText(),
                         authorField.getText(),
