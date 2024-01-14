@@ -105,6 +105,7 @@ public class AdministratorGUI extends Application {
 
 
     public void start(Stage stage) throws Exception {
+        administratorsPane.setId("administratorsPane");
 
         tableview=buildData();
 

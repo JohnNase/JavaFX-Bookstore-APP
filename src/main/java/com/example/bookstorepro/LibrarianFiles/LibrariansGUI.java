@@ -44,6 +44,7 @@ public class LibrariansGUI extends Application {
     }
 
     public static TableView buildData() {
+        tableview.setId("tableview");
         Connection c = null;
         //TABLE VIEW AND DATA
 
@@ -65,6 +66,7 @@ public class LibrariansGUI extends Application {
                 col.setCellValueFactory((Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>) param -> new SimpleStringProperty(param.getValue().get(j).toString()));
 
                 tableview.getColumns().addAll(col);
+
                 System.out.println("Column [" + i + "] ");
             }
 
@@ -112,6 +114,7 @@ public class LibrariansGUI extends Application {
 
     private void createLayout(Stage stage) throws FileNotFoundException {
         librariansPane.setStyle("-fx-background-color: #FFFAE2; ");
+        librariansPane.setId("librariansPane");
 
         Label hello = new Label("Hello Librarian!");
         hello.setFont(Font.loadFont(new FileInputStream("lib/Astrella.ttf"), 40));

@@ -20,6 +20,7 @@ public class SignUp extends Application {
     public ObjectInputStream input;
     public SignUp(){
     }
+    public static String successString = "";
     //Main pane
     VBox pane = new VBox(10);
 
@@ -46,6 +47,7 @@ public class SignUp extends Application {
     Label roleLabel = new Label("Role: ");
     Label successLabel = new Label("");
 
+
     //Button
     Button signUpButton = new Button("Sign Up");
 
@@ -53,7 +55,7 @@ public class SignUp extends Application {
     TextField firstNameTF = new TextField();
     TextField lastNameTF = new TextField();
     TextField emailTF = new TextField();
-    TextField usernameTF = new TextField();
+    static TextField usernameTF = new TextField();
     PasswordField passwordTF = new PasswordField();
     TextField roleTF = new TextField();
     PasswordField verifyPasswordTF = new PasswordField();
@@ -61,9 +63,21 @@ public class SignUp extends Application {
     public UserController newUserController = new UserController();
 
     public void start(Stage primaryStage) {
+        successLabel.setId("successLabel");
+        firstNameTF.setId("firstNameTF");
+        lastNameTF.setId("lastNameTF");
+        emailTF.setId("emailTF");
+        usernameTF.setId("usernameTF");
+        roleTF.setId("roleTF");
+        passwordTF.setId("passwordTF");
+        verifyPasswordTF.setId("verifyPasswordTF");
+        signUpButton.setId("signUpButton");
+
         read();
         addItemsToPanes();
         addStyling();
+
+
 
         //Creating the scene
         Scene scene = new Scene(pane);
@@ -147,11 +161,13 @@ public class SignUp extends Application {
             verifyPasswordTF.clear();
 
             successLabel.setText("User created!");
+            successString = successLabel.getText();
             newUserController.printUsers();
             write();
         }
         else{
             successLabel.setText("Error! Please fill out all fields!");
+            successString = successLabel.getText();
         }
     }
 
@@ -211,7 +227,6 @@ public class SignUp extends Application {
             System.out.println("3. " +  e1);
         }
     }
-
     public static void main(String[] args) {
         launch();
     }

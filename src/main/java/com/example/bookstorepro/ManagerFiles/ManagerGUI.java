@@ -109,6 +109,7 @@ public class ManagerGUI extends Application {
 
         //CREATE BORDERPANE FOR LIBRARIAN SCREEN UI
         BorderPane managersPane = new BorderPane();
+        managersPane.setId("managersPane");
         managersPane.setStyle("-fx-background-color: #EAE8DC; ");
 
         //Panes for AddBook buttons
@@ -161,6 +162,7 @@ public class ManagerGUI extends Application {
         CheckPerformanceButton.setStyle("-fx-background-color: EAD7D1;\n" + "   -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
         CheckPerformanceButton.setTranslateY(4);
         leftSide.getChildren().addAll(InventoryButton, AddBookButton, AddExistingBookButton, CheckPerformanceButton);
+
 
 
         //ADD THE HBOX TO THE BORDERPANE
