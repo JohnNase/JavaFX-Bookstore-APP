@@ -18,6 +18,7 @@ import java.sql.PreparedStatement;
 public class DeleteBookGUI extends Application {
     private static TextField bookNameField;
     private static TextField ISBNField;
+    public static String label = "";
     static GridPane grid = new GridPane();
 
     @Override
@@ -39,23 +40,28 @@ public class DeleteBookGUI extends Application {
         grid.add(bookNameLabel, 0, 0);
 
         bookNameField = new TextField();
+        bookNameField.setId("bookNameField");
         grid.add(bookNameField, 1, 0);
 
         Label ISBNLabel = new Label("ISBN:");
         grid.add(ISBNLabel, 0, 2);
 
         ISBNField = new TextField();
+        ISBNField.setId("ISBNField");
         grid.add(ISBNField, 1, 2);
 
         final Text actionTarget = new Text();
         grid.add(actionTarget, 0,4);
         Button addButton = new Button("Delete Book");
+        addButton.setId("addButton");
         addButton.setOnAction(e -> {
                     if(deleteBook(bookNameField.getText(), ISBNField.getText())){
                         actionTarget.setText(":( Book deleted successfully");
+                        label = ":( Book deleted successfully";
                     }
                     else{
                         actionTarget.setText("Failed to delete this book.");
+                        label = "Failed to delete this book.";
                     }
                 }
         );
@@ -76,7 +82,8 @@ public class DeleteBookGUI extends Application {
             System.out.println(status);
 
             if(status >0) {
-                System.out.println("Book deleted successfully.");
+                System.out.println(":( Book deleted successfully");
+                label = ":( Book deleted successfully";
                 if(AdministratorGUI.tableview != null){
                     AdministratorGUI.tableview.refresh();
                     return true;
@@ -85,6 +92,7 @@ public class DeleteBookGUI extends Application {
             }
             else {
                 System.out.println("Failed to delete this book.");
+                label = "Failed to delete this book.";
                 return false;
             }
         } catch (Exception e) {
