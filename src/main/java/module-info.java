@@ -7,7 +7,13 @@ module com.example.bookstorepro {
     requires testfx.junit5;
     requires javafx.graphics;
     requires mysql.connector.j;
+    requires org.junit.jupiter.api;
+    requires org.mockito;
+
     opens com.example.bookstorepro to javafx.fxml,testfx.core;
+    opens test.java.IntegrationTests to org.junit.platform.commons,org.junit.jupiter.api , org.junit.platform.launcher;
+    opens test.java.SystemTesting to org.junit.platform.commons,org.junit.jupiter.api, org.junit.platform.launcher;
+    opens test.java.UnitTests to org.junit.platform.commons,org.junit.jupiter.api, org.junit.platform.launcher;
 
     exports com.example.bookstorepro;
     exports com.example.bookstorepro.LibrarianFiles;

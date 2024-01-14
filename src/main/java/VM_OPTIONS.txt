@@ -1,0 +1,1 @@
+--add-exports org.junit.platform.commons/org.junit.platform.commons.util=ALL-UNNAMED --add-exports=org.junit.platform.commons/org.junit.platform.commons.logging=ALL-UNNAMED --add-opens javafx.graphics/com.sun.javafx.application=testfx.core
