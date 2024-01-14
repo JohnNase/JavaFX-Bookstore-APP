@@ -38,40 +38,40 @@ public class BillGeneratorUITest extends ApplicationTest {
     @BeforeEach
     void setUp() {
         SignUp signUp = new SignUp();
-       boolean result =  signUp.newUserController.signUp("Testing", "Test", "testtestest@example.com", "testFXRobot", "Manager", "password", "password");
+        boolean result =  signUp.newUserController.signUp("Testing", "Test", "testtestest@example.com", "testFXRobot", "Manager", "password", "password");
         System.out.println("Sign Up:"+result); // true if the sign up was successful
         LogIn.setUsername("testFXRobot");
     }
-//
-//    @Test
-//    public void testBuyOneBookSaveBill() {
-//        robot.clickOn("#tfBook").write("Me Before You");
-//        robot.clickOn("#tfQuantity").write("7");
-////        13 * 7 = 91, so the total amount should be 91
-//
-//        robot.sleep(3000);
-//
-//        // Click on Submit button
-//        robot.clickOn("#Submit");
-//        robot.sleep(3000);
-//
-//        String expected = "91.0";
-//
-//
-//        assertEquals(expected, robot.lookup("#lblTotalPrice").queryAs(Label.class).getText());
-//        // Click on the button that triggers the file save
-//        robot.clickOn("#saveButton");
-//        robot.sleep(3000);
-//        int billNumber = BillGenerator.getBillNumber() -1 ; // -1 because the bill number is incremented after the bill is generated
-//        Transaction transaction = new Transaction(LogIn.getUsername(), LocalDate.now(), 7, 91);
-//        insertTransaction(transaction);
-//
-//        // Check that the file exists in the directory
-//        Path filePath = Paths.get("Generated_Bills/Bill"+billNumber+".txt");
-//        System.out.println(filePath);
-//        assertTrue(Files.exists(filePath));
-//
-//    }
+    //
+    //    @Test
+    //    public void testBuyOneBookSaveBill() {
+    //        robot.clickOn("#tfBook").write("Me Before You");
+    //        robot.clickOn("#tfQuantity").write("7");
+    ////        13 * 7 = 91, so the total amount should be 91
+    //
+    //        robot.sleep(3000);
+    //
+    //        // Click on Submit button
+    //        robot.clickOn("#Submit");
+    //        robot.sleep(3000);
+    //
+    //        String expected = "91.0";
+    //
+    //
+    //        assertEquals(expected, robot.lookup("#lblTotalPrice").queryAs(Label.class).getText());
+    //        // Click on the button that triggers the file save
+    //        robot.clickOn("#saveButton");
+    //        robot.sleep(3000);
+    //        int billNumber = BillGenerator.getBillNumber() -1 ; // -1 because the bill number is incremented after the bill is generated
+    //        Transaction transaction = new Transaction(LogIn.getUsername(), LocalDate.now(), 7, 91);
+    //        insertTransaction(transaction);
+    //
+    //        // Check that the file exists in the directory
+    //        Path filePath = Paths.get("Generated_Bills/Bill"+billNumber+".txt");
+    //        System.out.println(filePath);
+    //        assertTrue(Files.exists(filePath));
+    //
+    //    }
 
 
     @Test
