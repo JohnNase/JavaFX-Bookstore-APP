@@ -42,6 +42,15 @@ public class PerformanceGUI extends Application {
         gridPane.setPadding(new Insets(8, 8, 8, 8));
         gridPane.setHgap(10);
         gridPane.setVgap(10);
+        btnTransactions.setId("btnTransactions");
+        btnOtherUser.setId("btnOtherUser");
+        btnChart.setId("btnChart");
+        btSubmit.setId("btSubmit");
+        txtUsername.setId("txtUsername");
+        dpStartDate.setId("dpStartDate");
+        dpEndDate.setId("dpEndDate");
+        profit.setId("profit");
+
         gridPane.add(btnTransactions, 0, 0);
         gridPane.add(btnOtherUser, 1, 0);
         gridPane.add(profit, 2, 0);

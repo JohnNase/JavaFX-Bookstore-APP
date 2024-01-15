@@ -170,6 +170,7 @@ public class AdministratorGUI extends Application {
         AddExistingBookButton.setTranslateY(3);
         CheckPerformanceButton.setStyle("-fx-color: #EDEBD7; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
         CheckPerformanceButton.setTranslateY(4);
+        CheckPerformanceButton.setId("CheckPerformanceButton");
         ManageUsersButton.setStyle("-fx-color: #EDEBD7;-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
         ManageUsersButton.setTranslateY(5);
         ManageUsersButton.setId("ManageUsersButton");

@@ -1,6 +1,7 @@
 package test.java.SystemTesting;
 
 import com.example.bookstorepro.AdministratorFiles.AdministratorGUI;
+import com.example.bookstorepro.PerformanceGUI;
 import com.example.bookstorepro.ReadData;
 import com.example.bookstorepro.User;
 import javafx.application.Platform;
@@ -18,6 +19,7 @@ import java.io.FileNotFoundException;
 import static com.example.bookstorepro.AdministratorFiles.AdministratorGUI.dialog;
 import static com.example.bookstorepro.AdministratorFiles.AdministratorGUI.userTable;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.testfx.util.WaitForAsyncUtils.waitFor;
 import static org.testfx.util.WaitForAsyncUtils.waitForFxEvents;
 
 public class AdministratorGUITest extends ApplicationTest {
@@ -66,7 +68,6 @@ public class AdministratorGUITest extends ApplicationTest {
         type(KeyCode.ESCAPE);
         sleep(1000);
     }
-
 
 
 }
