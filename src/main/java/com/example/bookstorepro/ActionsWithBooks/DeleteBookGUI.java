@@ -84,10 +84,6 @@ public class DeleteBookGUI extends Application {
             if(status >0) {
                 System.out.println(":( Book deleted successfully");
                 label = ":( Book deleted successfully";
-                if(AdministratorGUI.tableview != null){
-                    AdministratorGUI.tableview.refresh();
-                    return true;
-                }
                 return true;
             }
             else {

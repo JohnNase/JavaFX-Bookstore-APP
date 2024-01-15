@@ -1,4 +1,4 @@
-package test.java.IntegrationTests;
+package test.java.RunSeparated;
 
 import com.example.bookstorepro.ActionsWithBooks.Book;
 import com.example.bookstorepro.Bill.BillGenerator;

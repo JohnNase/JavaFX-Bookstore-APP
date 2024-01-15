@@ -1,4 +1,4 @@
-package test.java.IntegrationTests;
+package test.java.RunSeparated;
 
 import com.example.bookstorepro.SignUp;
 import com.example.bookstorepro.User;

@@ -14,7 +14,7 @@ public class DeleteBookTest {
 
     @BeforeEach
     public void setUp() {
-        AddBookGUI.addBook("test", "test", "1234567890", "test", 1, 1.0, 1.0, LocalDate.now(), "test");
+        AddBookGUI.addBook("test", "test", "1234567890", "test", 190, 1.0, 18.0, LocalDate.now(), "test");
     }
 
     @Test

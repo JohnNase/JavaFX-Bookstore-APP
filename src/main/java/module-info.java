@@ -22,6 +22,7 @@ module com.example.bookstorepro {
     exports com.example.bookstorepro.Database;
     exports com.example.bookstorepro.ActionsWithBooks;
     exports com.example.bookstorepro.AdministratorFiles;
+    opens test.java.RunSeparated to org.junit.jupiter.api, org.junit.platform.commons, org.junit.platform.launcher;
 }
 
 

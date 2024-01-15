@@ -25,7 +25,7 @@ import static org.testfx.api.FxAssert.verifyThat;
 
 @TestInstance(TestInstance.Lifecycle.PER_METHOD)
 public class LoginUITest extends ApplicationTest {
-    FxRobot robot = new FxRobot();
+    private static UserController userController;
 
     @BeforeEach
     public void setup() throws Exception {
@@ -34,7 +34,8 @@ public class LoginUITest extends ApplicationTest {
         FxToolkit.setupApplication(LogIn.class);
     }
 
-    private static void signUpTestUser(UserController userController, String firstName, String lastName, String email, String username, String role, String password, String verifyPassword) {
+    private static void signUpTestUser(String firstName, String lastName, String email, String username, String role, String password, String verifyPassword) {
+        userController = new UserController();
         userController.signUp(firstName, lastName, email, username, role, password, verifyPassword);
     }
 
@@ -46,8 +47,7 @@ public class LoginUITest extends ApplicationTest {
 
     @Test
     public void testLoginLibrarian() {
-        UserController userController = new UserController();
-        signUpTestUser(userController, "Sierra", "Mendes", "smendes@gmail.com", "smendes", "librarian", "password", "password");
+        signUpTestUser( "Sierra", "Mendes", "smendes@gmail.com", "smendes", "librarian", "password", "password");
         userController.saveData();
         clickOn("#usernameField").write("smendes");
         clickOn("#passwordField").write("password");
@@ -58,8 +58,7 @@ public class LoginUITest extends ApplicationTest {
 
     @Test
     public void testLoginManager() {
-        UserController userController = new UserController();
-        signUpTestUser(userController, "Barbie", "Doll", "barb@gmail.com", "barbie", "manager", "password", "password");
+        signUpTestUser("Barbie", "Doll", "barb@gmail.com", "barbie", "manager", "password", "password");
         userController.saveData();
 
         clickOn("#usernameField").write("barbie");
@@ -71,8 +70,7 @@ public class LoginUITest extends ApplicationTest {
 
     @Test
     public void testLoginAdmin() {
-        UserController userController = new UserController();
-        signUpTestUser(userController, "Sydney", "Sweeney", "sweeney@gmail.com", "sydney", "administrator", "password", "password");
+        signUpTestUser("Sydney", "Sweeney", "sweeney@gmail.com", "sydney", "administrator", "password", "password");
         userController.saveData();
 
         clickOn("#usernameField").write("sydney");
