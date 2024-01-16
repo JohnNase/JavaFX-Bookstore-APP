@@ -133,7 +133,9 @@ public class LibrariansGUI extends Application {
         leftSide.setStyle("-fx-background-color: #EADDA6; ");
 
         Button InventoryButton = new Button("Books Table");
+        InventoryButton.setId("InventoryButton");
         Button BillButton = new Button("Generate Bill");
+        BillButton.setId("BillButton");
 
         InventoryButton.setStyle("-fx-color: #FFFAE2; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0) ;");
         InventoryButton.setTranslateY(50);

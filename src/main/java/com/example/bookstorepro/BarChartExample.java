@@ -20,12 +20,12 @@ import java.time.LocalDate;
 
 public class BarChartExample extends Application {
 
-    private static final DatePicker startDatePicker = new DatePicker();
-    private static final DatePicker endDatePicker = new DatePicker();
+    public static final DatePicker startDatePicker = new DatePicker();
+    public static final DatePicker endDatePicker = new DatePicker();
     public static GridPane gridPane = new GridPane();
     private static final Label labelStartDate = new Label("Start Date:");
     private static final Label labelEndDate = new Label("End Date:");
-    private static final Button okButton = new Button("OK");
+    public static final Button okButton = new Button("OK");
     private static BarChart<String, Number> barChart;
 
 
@@ -35,6 +35,9 @@ public class BarChartExample extends Application {
     }
 
     public static GridPane buildChart() {
+        startDatePicker.setId("ChartStartDatePicker");  // Set ID for DatePicker
+        endDatePicker.setId("ChartEndDatePicker");      // Set ID for DatePicker
+        okButton.setId("ChartOKButton");
 
         gridPane.getChildren().removeIf(node -> node instanceof BarChart); // Remove any existing chart
         gridPane.getChildren().clear();
@@ -150,6 +153,7 @@ public class BarChartExample extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
         buildChart();
 
     }

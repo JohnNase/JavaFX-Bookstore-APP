@@ -153,13 +153,21 @@ public class AdministratorGUI extends Application {
 
         //CREATE THE BUTTONS
         Button InventoryButton = new Button("Inventory");
+        InventoryButton.setId("InventoryButton");
         Button AddBookButton = new Button("Add Book");
+        AddBookButton.setId("AddBookButton");
         Button AddExistingBookButton = new Button("Add old Book");
+        AddExistingBookButton.setId("AddExistingBookButton");
         Button DeleteBookButton = new Button("Delete Book");
+        DeleteBookButton.setId("DeleteBookButton");
         Button CheckPerformanceButton = new Button("Check Performance");
+        CheckPerformanceButton.setId("CheckPerformanceButton");
         Button ManageUsersButton = new Button("Manage Users");
+        ManageUsersButton.setId("ManageUsersButton");
         Button AddUserButton = new Button("Add User");
+        AddUserButton.setId("AddUserButton");
         Button ProfitButton = new Button("Profit");
+        ProfitButton.setId("ProfitButton");
 
         //ADD BUTTONS TO VBOX, STYLE BUTTONS
         InventoryButton.setStyle("-fx-color: #EDEBD7; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
@@ -178,6 +186,7 @@ public class AdministratorGUI extends Application {
         AddUserButton.setTranslateY(6);
         DeleteBookButton.setStyle("-fx-color: #EDEBD7;-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
         DeleteBookButton.setTranslateY(7);
+        DeleteBookButton.setId("DeleteBookButton");
         leftSide.getChildren().addAll(InventoryButton, AddBookButton,AddExistingBookButton, DeleteBookButton, ManageUsersButton, AddUserButton,CheckPerformanceButton);
 
         //ADD THE HBOX TO THE BORDERPANE

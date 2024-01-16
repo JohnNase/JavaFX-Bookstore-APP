@@ -8,7 +8,6 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationTest;
 
 import java.io.FileNotFoundException;
-import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

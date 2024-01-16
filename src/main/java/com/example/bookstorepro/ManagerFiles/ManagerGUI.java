@@ -147,9 +147,13 @@ public class ManagerGUI extends Application {
 
         //CREATE THE BUTTONS
         Button InventoryButton = new Button("Inventory");
+        InventoryButton.setId("InventoryButton");
         Button AddBookButton = new Button("Add Book");
+        AddBookButton.setId("AddBookButton");
         Button AddExistingBookButton = new Button("Add old Book");
+        AddExistingBookButton.setId("AddExistingBookButton");
         Button CheckPerformanceButton = new Button("Check \nPerformance");
+        CheckPerformanceButton.setId("CheckPerformanceButton");
 
         //ADD BUTTONS TO VBOX, STYLE BUTTONS
 
@@ -159,8 +163,10 @@ public class ManagerGUI extends Application {
         AddBookButton.setTranslateY(2);
         AddExistingBookButton.setStyle("-fx-background-color: EAD7D1;\n" + "   -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
         AddExistingBookButton.setTranslateY(3);
+        AddExistingBookButton.setId("AddExistingBookButton");
         CheckPerformanceButton.setStyle("-fx-background-color: EAD7D1;\n" + "   -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);");
         CheckPerformanceButton.setTranslateY(4);
+        CheckPerformanceButton.setId("CheckPerformanceButton");
         leftSide.getChildren().addAll(InventoryButton, AddBookButton, AddExistingBookButton, CheckPerformanceButton);
 
 
