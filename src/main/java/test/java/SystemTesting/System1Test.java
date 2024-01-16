@@ -217,6 +217,125 @@ public class System1Test extends ApplicationTest {
     }
 
 
+    @Test
+    public void testPathAdmin() {
+        signUpTestUser("James", "Wilson", "wilson324@gmail.com", "jwilson22", "administrator", "password", "password");
+        userController.saveData();
+
+        clickOn("#usernameField").write("jwilson22");
+        clickOn("#passwordField").write("password");
+        clickOn("#loginButton");
+        sleep(3000);
+        verifyThat("#administratorsPane", NodeMatchers.isVisible());
+
+        //CHECK LIST OF BOOKS
+        clickOn("#InventoryButton");
+        sleep(3000);
+
+        //ADD A NEW BOOK
+        clickOn("#AddBookButton");
+        clickOn("#bookNameField").write(generateRandomBookName());
+        clickOn("#authorField").write("Patricia Larking");
+        clickOn("#ISBNField").write(generateISBN13());
+        clickOn("#genreField").write("Romance");
+        clickOn("#quantityField").write("192");
+        clickOn("#buyPriceField").write("10.0");
+        clickOn("#sellPriceField").write("15.0");
+        type(KeyCode.DOWN); // Navigate to the desired date
+        type(KeyCode.ENTER); // Select the desired date
+        clickOn("#supplierField").write("Bookland Inc.");
+        // Perform the action
+        clickOn("#addButton");
+        sleep(1000);
+
+        //ADD AN EXISTING BOOK
+        clickOn("#AddExistingBookButton");
+        clickOn("#bookNameField").write("The Dark Dragon");
+        clickOn("Submit");
+        assertThat(lookup("#authorField").queryTextInputControl()).hasText("Cameron Woodard");
+        assertThat(lookup("#ISBNField").queryTextInputControl()).hasText("9781234567897");
+        assertThat(lookup("#genreField").queryTextInputControl()).hasText("Fantasy");
+        assertThat(lookup("#supplierField").queryTextInputControl()).hasText("Adrion Ltd");
+        assertThat(lookup("#quantityField").queryTextInputControl()).hasText("");
+        assertThat(lookup("#buyPriceField").queryTextInputControl()).hasText("");
+        assertThat(lookup("#sellPriceField").queryTextInputControl()).hasText("");
+        // Enter the quantity, buy price, and sell price
+        clickOn("#quantityField").write("456");
+        clickOn("#buyPriceField").write("10.0");
+        clickOn("#sellPriceField").write("22.0");
+        // Select the current date
+        clickOn("#datePicker");
+        type(KeyCode.ENTER); // Select the current date
+        // Click on the "Add Book" button
+        clickOn("#addButton");
+        // Verify that the book was added successfully
+        assertEquals("Existing book added successfully.", AddExistingBookGUI.label);
+
+        //CHECK PERFORMANCE
+        clickOn("#CheckPerformanceButton");
+        sleep(1000);
+        clickOn("#btnTransactions");
+        sleep(1000);
+        clickOn("#txtUsername").write("SaraBerberi");
+        clickOn("#dpStartDate").write("11/1/2023");
+        clickOn("#dpEndDate").write("11/1/2024");
+        clickOn("#btSubmit");
+        sleep(1000);
+        clickOn("#btnOtherUser");
+        clickOn("#txtUsername").write("JohnNase");
+        clickOn("#dpStartDate").write("11/1/2023");
+        clickOn("#dpEndDate").write("11/1/2024");
+        clickOn("#btSubmit");
+        sleep(1000);
+        clickOn("#btnChart");
+        sleep(1000);
+
+        //DELETE BOOK
+        clickOn("#DeleteBookButton");
+        AddBookGUI.addBook("TestBook", "TestAuthor", "1234567890", "TestGenre", 1, 10.0, 15.0, null, "TestSupplier");
+        clickOn("#bookNameField").write("TestBook");
+        sleep(1000); // Pause for 1 second
+        clickOn("#ISBNField").write("1234567890");
+        sleep(1000); // Pause for 1 second
+        // Click on the "Delete Book" button
+        clickOn("#addButton");
+        sleep(1000);
+        // Verify that the book was deleted successfully
+        assertEquals(":( Book deleted successfully", DeleteBookGUI.label);
+        sleep(1000);
+
+        //MANAGE USERS - CHANGE ROLE
+        clickOn("#ManageUsersButton");
+        lookup("#administratorsPane").query();
+        TableView.TableViewSelectionModel selectionModel = userTable.getSelectionModel();
+        User selectedUser = userTable.getSelectionModel().getSelectedItem();
+        interact(() -> {
+            userTable.getSelectionModel().selectFirst();
+        });
+        sleep(1000);
+        clickOn("#changeRoleButton");
+        sleep(1000);
+        waitForFxEvents();
+        clickOn("#okButton");
+        sleep(1000);
+        System.out.println(selectedUser);
+        type(KeyCode.ESCAPE);
+        sleep(1000);
+
+        //MANAGE USERS - DELETE USER
+        clickOn("#ManageUsersButton");
+        interact(() -> userTable.getSelectionModel().selectFirst());
+        sleep(500);
+        clickOn("#deleteUserButton");
+        sleep(1000);
+        waitForFxEvents();
+        sleep(1000);
+        type(KeyCode.ESCAPE);
+        sleep(6000);
+
+    }
+
+
 }
 
 
